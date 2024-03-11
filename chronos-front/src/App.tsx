@@ -1,11 +1,15 @@
 import './App.css'
+import {Link} from "react-router-dom";
 
 function App() {
-  return (
-    <>
-        <a href="https://www.notion.so/Chronos-Teamspace-0d4d2fcee0f8423591a8ea32292d5138">Follow the link</a>
-    </>
-  )
+    return (
+        <div>
+            <Link className={"text-blue-600 block"} to={"/signing"}>Sign in</Link>
+            <Link className={"text-blue-600 block"} to={"/signup"}>Sign up</Link>
+
+        </div>
+
+    )
 }
 
 export default App
