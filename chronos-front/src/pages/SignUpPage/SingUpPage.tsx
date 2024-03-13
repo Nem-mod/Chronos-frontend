@@ -2,17 +2,36 @@ import {TextField} from "../../components/InputFields/TextField.tsx";
 import {createTsForm} from "@ts-react/form";
 import {z} from "zod";
 import {Link} from "react-router-dom";
+import {fetchRegister, fetchVerify} from "../../store/slices/auth.ts";
+import {useAppDispatch} from "../../hooks/redux-hooks.ts";
+import {webURL} from "../../axios.ts";
 
 const mapping = [[z.string(), TextField]] as const;
 const SignUpForm = createTsForm(mapping)
 
 const SignUpSchema = z.object({
     email: z.string().email("Message err").describe("Your email // name@company.com"),
-    password: z.string().length(8, "ERR").describe("Password // *******"),
-    repeatPassword: z.string().length(8, "ERR").describe("Confirm password // *******")
+    username: z.string().describe("Your Login // nemdod"),
+    password: z.string().min(4, "ERR").describe("Password // *******"),
+    repeatPassword: z.string().min(4, "ERR").describe("Confirm password // *******")
 })
 export const SignUpPage = () => {
-    const handleOnSubmit = (data: z.infer<typeof SignUpSchema>) => console.log(data);
+    const dispatch = useAppDispatch();
+    const handleOnSubmit = async (data: z.infer<typeof SignUpSchema>) => {
+        console.log(data)
+        dispatch(
+            fetchRegister({
+                email: data.email,
+                username: data.username,
+                password: data.password
+            })
+        )
+        dispatch(fetchVerify({
+            returnUrl: `${webURL}/verify?token=verifyToken`,
+            username: data.username
+        }))
+
+    };
 
     return (
         <section className="bg-gray-50 dark:bg-gray-900">
@@ -35,10 +54,11 @@ export const SignUpPage = () => {
                                 }
                             }}
                         >
-                            {({email, password, repeatPassword}) => {
+                            {({email, password, repeatPassword, username}) => {
                                 return (
                                     <div className={"flex flex-col gap-3"}>
                                         {email}
+                                        {username}
                                         {password}
                                         {repeatPassword}
 
