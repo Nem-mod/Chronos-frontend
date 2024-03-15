@@ -24,7 +24,8 @@
     "react-router-dom": "^6.3",
     "redux": "^5.0.1",
     "redux-toolkit": "^1.1.2",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "@react-buddy/ide-toolbox": "^2.4.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",

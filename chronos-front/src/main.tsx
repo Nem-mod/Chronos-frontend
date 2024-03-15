@@ -4,11 +4,17 @@ import {RouterProvider} from "react-router-dom"
 import {Provider} from "react-redux";
 import {store} from "./store/store.ts"
 import {router} from "./Routes/Routes.tsx";
+import {DevSupport} from "@react-buddy/ide-toolbox";
+import {ComponentPreviews, useInitial} from "./dev";
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-        <Provider store={store}>
+    <Provider store={store}>
+        <DevSupport ComponentPreviews={ComponentPreviews}
+                    useInitialHook={useInitial}
+        >
             <RouterProvider router={router}/>
-        </Provider>,
+        </DevSupport>
+    </Provider>,
 )
 

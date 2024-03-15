@@ -1,21 +1,33 @@
 import {TextField} from "../../components/InputFields/TextField.tsx";
 import {createTsForm} from "@ts-react/form";
 import {z} from "zod";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {useAppDispatch} from "../../hooks/redux-hooks.ts";
+import {fetchAuth} from "../../store/slices/auth.ts";
 
 const mapping = [[z.string(), TextField]] as const;
 const SignInForm = createTsForm(mapping);
 
 const SignInSchema = z.object({
-    email: z.string().email("Message err").describe("Your email // name@company.com"),
+    username: z.string().describe("Your username // username"),
     password: z.string().length(8, "ERR").describe("Password // *******"),
 })
 
-export const SignInPage = function ()  {
-
+export const SignInPage = function () {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const handleOnSubmit = (data: z.infer<typeof SignInSchema>) => {
-        console.log(data);
-        // TODO: LOGIN REQUEST
+        const {error} = dispatch(
+            fetchAuth({
+                username: data.username,
+                password: data.password
+            })
+        );
+
+        if (error)
+            return;
+
+        navigate("/calendar");
     }
 
     return (
@@ -45,10 +57,10 @@ export const SignInPage = function ()  {
                                 }
                             }}
                         >
-                            {({email, password}) => {
+                            {({username, password}) => {
                                 return (
                                     <div className={"flex flex-col gap-3"}>
-                                        {email}
+                                        {username}
                                         {password}
 
                                         <button
@@ -69,8 +81,7 @@ export const SignInPage = function ()  {
                                             <Link
                                                 to={"/signup"}
                                                 className={"font-medium text-primary-600 hover:underline dark:text-primary-500"}
-                                            >
-                                                Sign up here
+                                            > Sign up here
                                             </Link>
                                         </p>
                                     </div>

@@ -14,12 +14,25 @@ export const fetchRegister = createAsyncThunk(
         try {
             const response = await axios.post("/auth/register", params)
             return response.data
-        }
-        catch (error: any) {
+        } catch (error: any) {
             return thunkAPI.rejectWithValue(error.meessage)
         }
     }
 )
+
+
+export const fetchAuth = createAsyncThunk(
+    "auth/login",
+    async (params: any, thunkAPI) => {
+        try {
+            const response = await axios.post("/auth/login", params)
+            return response.data
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue(error.meessage)
+        }
+    }
+)
+
 
 export const fetchVerify = createAsyncThunk(
     "auth/verify/",
@@ -60,7 +73,23 @@ const authSlice = createSlice({
             };
             state.success = true;
         });
+
         builder.addCase(fetchRegister.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error
+            state.success = false;
+        });
+
+        builder.addCase(fetchAuth.fulfilled, (state, action) => {
+            state.loading = false;
+            state.userInfo = {
+                username: action.payload.username,
+                email: action.payload.email
+            };
+            state.success = true;
+        });
+
+        builder.addCase(fetchAuth.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error
             state.success = false;
