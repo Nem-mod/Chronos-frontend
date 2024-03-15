@@ -33,6 +33,17 @@ export const fetchAuth = createAsyncThunk(
     },
 );
 
+export const fetchAuthMe = createAsyncThunk(
+    'auth/me',
+    async (params: any, thunkAPI) => {
+        try {
+            const response = await axios.get('/auth/profile', params);
+            return response.data;
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue(error.message);
+        }
+    },
+);
 
 export const fetchVerify = createAsyncThunk(
     'auth/verify/',
@@ -90,6 +101,21 @@ const authSlice = createSlice({
         });
 
         builder.addCase(fetchAuth.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error;
+            state.success = false;
+        });
+
+        builder.addCase(fetchAuthMe.fulfilled, (state, action) => {
+            state.loading = false;
+            state.userInfo = {
+                username: action.payload.username,
+                email: action.payload.email,
+            };
+            state.success = true;
+        });
+
+        builder.addCase(fetchAuthMe.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error;
             state.success = false;

@@ -1,25 +1,37 @@
 import './App.css';
-import { useNavigate } from 'react-router-dom';
-import useFetch, { HttpMethods } from './hooks/use-fetch-hook.ts';
-import { Fragment, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch } from './hooks/redux-hooks.ts';
+import { useEffect } from 'react';
+import { fetchAuthMe } from './store/slices/auth.ts';
 
 function App() {
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const [data, , error] = useFetch('/auth/profile', HttpMethods.get, {});
     useEffect(() => {
-        if (data) {
-            navigate('calendar');
-            return;
-        }
+        const auth = async () => {
+            const { error } = await dispatch(
+                fetchAuthMe(null),
+            );
 
-        error && navigate('/signin');
-    }, [data, error]);
+            if (error) {
+                console.log(error);
+                navigate('/signin');
+                return;
+            }
 
+            navigate('/calendar');
+        };
+
+        auth().catch();
+
+    }, []);
     return (
-        <Fragment>
+        <div>
+            <Link className={'text-blue-600 block'} to={'/signin'}>Sign in</Link>
+            <Link className={'text-blue-600 block'} to={'/signup'}>Sign up</Link>
 
-        </Fragment>
+        </div>
 
     );
 }
