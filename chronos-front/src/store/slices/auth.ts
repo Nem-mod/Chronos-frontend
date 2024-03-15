@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from '../../axios.ts';
 import { RootState } from '../store.ts';
 
-type Client = {
+export type Client = {
     username: string | null,
     email: string | null,
     password?: string
@@ -56,17 +56,14 @@ export const fetchVerify = createAsyncThunk(
 
 interface AuthState {
     loading: boolean,
-    userInfo: Client,
+    userInfo: Client | null,
     error: any | null,
     success: boolean
 }
 
 const initialState: AuthState = {
     loading: false,
-    userInfo: {
-        username: null,
-        email: null,
-    },
+    userInfo: null,
     error: null,
     success: false,
 };
