@@ -1,6 +1,6 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import axios from "../../axios.ts";
-import {RootState} from "../store.ts";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from '../../axios.ts';
+import { RootState } from '../store.ts';
 
 type Client = {
     username: string | null,
@@ -9,38 +9,38 @@ type Client = {
 }
 
 export const fetchRegister = createAsyncThunk(
-    "auth/register",
+    'auth/register',
     async (params: any, thunkAPI) => {
         try {
-            const response = await axios.post("/auth/register", params)
-            return response.data
+            const response = await axios.post('/auth/register', params);
+            return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue(error.meessage)
+            return thunkAPI.rejectWithValue(error.message);
         }
-    }
-)
+    },
+);
 
 
 export const fetchAuth = createAsyncThunk(
-    "auth/login",
+    'auth/login',
     async (params: any, thunkAPI) => {
         try {
-            const response = await axios.post("/auth/login", params)
-            return response.data
+            const response = await axios.post('/auth/login', params);
+            return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue(error.meessage)
+            return thunkAPI.rejectWithValue(error.message);
         }
-    }
-)
+    },
+);
 
 
 export const fetchVerify = createAsyncThunk(
-    "auth/verify/",
+    'auth/verify/',
     async (params: any) => {
-        const {data} = await axios.post("/auth/verify/send-code", params)
-        return data
-    }
-)
+        const { data } = await axios.post('/auth/verify/send-code', params);
+        return data;
+    },
+);
 
 
 interface AuthState {
@@ -54,29 +54,29 @@ const initialState: AuthState = {
     loading: false,
     userInfo: {
         username: null,
-        email: null
+        email: null,
     },
     error: null,
     success: false,
-}
+};
 
 const authSlice = createSlice({
     initialState,
-    name: "auth",
+    name: 'auth',
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(fetchRegister.fulfilled, (state, action) => {
             state.loading = false;
             state.userInfo = {
                 username: action.payload.username,
-                email: action.payload.email
+                email: action.payload.email,
             };
             state.success = true;
         });
 
         builder.addCase(fetchRegister.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.error
+            state.error = action.error;
             state.success = false;
         });
 
@@ -84,20 +84,20 @@ const authSlice = createSlice({
             state.loading = false;
             state.userInfo = {
                 username: action.payload.username,
-                email: action.payload.email
+                email: action.payload.email,
             };
             state.success = true;
         });
 
         builder.addCase(fetchAuth.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.error
+            state.error = action.error;
             state.success = false;
         });
 
-    }
-})
+    },
+});
 
 export const authReducer = authSlice.reducer;
 
-export const getUserInfo = (state: RootState) => state.auth.userInfo
+export const getUserInfo = (state: RootState) => state.auth.userInfo;

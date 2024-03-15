@@ -1,15 +1,27 @@
-import './App.css'
-import {Link} from "react-router-dom";
+import './App.css';
+import { useNavigate } from 'react-router-dom';
+import useFetch, { HttpMethods } from './hooks/use-fetch-hook.ts';
+import { Fragment, useEffect } from 'react';
 
 function App() {
+    const navigate = useNavigate();
+
+    const [data, , error] = useFetch('/auth/profile', HttpMethods.get, {});
+    useEffect(() => {
+        if (data) {
+            navigate('calendar');
+            return;
+        }
+
+        error && navigate('/signin');
+    }, [data, error]);
+
     return (
-        <div>
-            <Link className={"text-blue-600 block"} to={"/signin"}>Sign in</Link>
-            <Link className={"text-blue-600 block"} to={"/signup"}>Sign up</Link>
+        <Fragment>
 
-        </div>
+        </Fragment>
 
-    )
+    );
 }
 
-export default App
+export default App;
