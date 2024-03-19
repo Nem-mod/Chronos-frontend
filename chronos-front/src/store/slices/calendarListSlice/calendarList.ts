@@ -1,13 +1,17 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from '../../../axios.ts';
 import { CalendarEntry } from './types.ts';
 import { RootState } from '../../store.ts';
 
-export const fetchCalendarList = createAsyncThunk(
+type TCalendarEntries = {
+    _id: string
+    calendarEntries: CalendarEntry[]
+};
+export const fetchCalendarList = createAsyncThunk<TCalendarEntries, void, { rejectValue: string }>(
     'calendarList/get',
-    async (params: any, thunkAPI) => {
+    async (_, thunkAPI) => {
         try {
-            const response = await axios.get('/calendar/all', params);
+            const response = await axios.get('/calendar/all');
             return response.data;
         } catch (error: any) {
             return thunkAPI.rejectWithValue(error.message);
@@ -34,7 +38,7 @@ const calendarListSlice = createSlice({
     initialState,
     name: 'calendarList',
     reducers: {
-        setCalendarAsActive(state, action) {
+        setCalendarAsActive(state: CalendarListState, action: PayloadAction<{ id: string, value: boolean }>) {
             const id: string = action.payload.id;
             const visibility = action.payload.value;
             let mutatedMap = new Map(state.calendarEntryMap);

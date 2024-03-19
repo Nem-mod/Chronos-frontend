@@ -14,8 +14,9 @@ export const HomePage = () => {
     };
 
     useEffect(() => {
+        // @ts-ignore
         dispatch(fetchCalendarList());
-    }, []);
+    }, [dispatch]);
 
     return (
         <div className={'flex min-h-screen'}>
