@@ -1,17 +1,19 @@
-import { Calendar, setCalendarAsActive } from '../../store/slices/calendarList.ts';
+// import { setCalendarAsActive } from '../../store/slices/calendarList.ts';
 import { useMemo, useState } from 'react';
 import { useAppDispatch } from '../../hooks/redux-hooks.ts';
 import { CalendarCheckEntry } from '../CalendarCheckEntry/CalendarCheckEntry.tsx';
+import { CalendarEntry } from '../../store/slices/calendarListSlice/types.ts';
+import { setCalendarAsActive } from '../../store/slices/calendarListSlice/calendarList.ts';
 
 interface Props {
     name: string;
-    calendarMap: Map<string, Calendar>;
+    calendarEntryMap: Map<string, CalendarEntry>;
 }
 
-export const CalendarCheckList = ({ name, calendarMap }: Props) => {
+export const CalendarCheckList = ({ name, calendarEntryMap }: Props) => {
     const dispatch = useAppDispatch();
     let [check, setCheck] = useState<boolean>(false);
-    let calendarList: Calendar[] = useMemo(() => Array.from(calendarMap.values()), [calendarMap]);
+    let calendarEntryList: CalendarEntry[] = useMemo(() => Array.from(calendarEntryMap.values()), [calendarEntryMap]);
 
     const handleCalendarStatusCallback = (id: string, value: boolean) => {
         dispatch(setCalendarAsActive({
@@ -30,9 +32,14 @@ export const CalendarCheckList = ({ name, calendarMap }: Props) => {
             </div>
             <div className='collapse-content'>
                 <ul>
-                    {calendarList && calendarList.map((e) => (
-                            <CalendarCheckEntry key={e._id} calendarId={e._id} name={e.name}
-                                                checkCallBack={handleCalendarStatusCallback} />
+                    {calendarEntryList && calendarEntryList.map((e) => (
+                            <CalendarCheckEntry
+                                key={e._id}
+                                calendarEntryId={e._id}
+                                calendar={e.calendar}
+                                checkCallBack={handleCalendarStatusCallback}
+                                visibility={e.visibilitySettings.isVisible}
+                            />
                         ),
                     )}
                 </ul>

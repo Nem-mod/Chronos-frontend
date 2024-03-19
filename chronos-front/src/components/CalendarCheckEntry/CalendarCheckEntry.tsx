@@ -1,21 +1,28 @@
+import { Calendar } from '../../store/slices/calendarListSlice/types.ts';
+import { useState } from 'react';
+
 interface Props {
-    calendarId: string;
-    name: string;
+    calendarEntryId: string;
+    calendar: Calendar;
     checkCallBack: (id: string, value: boolean) => void;
+    visibility: boolean;
 }
 
-export const CalendarCheckEntry = ({ calendarId, name, checkCallBack }: Props) => {
+export const CalendarCheckEntry = ({ calendarEntryId, calendar, checkCallBack, visibility }: Props) => {
+    let [checked, setChecked] = useState(visibility || false);
     const handleCheck = (e: any) => {
         let checked = e.target.checked;
-        checkCallBack(calendarId, checked);
+        setChecked(checked);
+        checkCallBack(calendarEntryId, checked);
     };
     return (
         <>
-            <li key={calendarId} className={''}>
+            <li key={calendarEntryId} onClick={handleCheck} className={''}>
                 <label className='cursor-pointer label'>
-                    <input type='checkbox' defaultChecked className='checkbox'
-                           onChange={handleCheck} />
-                    <span className=''>{name}</span>
+                    <input type='checkbox' className='checkbox'
+                           defaultChecked={checked}
+                    />
+                    <span className=''>{calendar.name}</span>
                 </label>
             </li>
         </>

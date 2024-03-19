@@ -1,6 +1,6 @@
 import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
 import { authReducer } from './slices/auth.ts';
-import { calendarListReducer } from './slices/calendarList.ts';
+import { calendarListReducer } from './slices/calendarListSlice/calendarList.ts';
 import { enableMapSet } from 'immer';
 
 enableMapSet();

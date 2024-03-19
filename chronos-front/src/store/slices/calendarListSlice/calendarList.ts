@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from '../../axios.ts';
+import axios from '../../../axios.ts';
+import { CalendarEntry } from './types.ts';
+import { RootState } from '../../store.ts';
 
 export const fetchCalendarList = createAsyncThunk(
     'calendarList/get',
@@ -13,28 +15,16 @@ export const fetchCalendarList = createAsyncThunk(
     },
 );
 
-export type Calendar = {
-    _id: string,
-    name: string,
-    description: string,
-    timezone: string,
-    active: boolean
-    users: {
-        owners: [],
-        guests: []
-    }
-}
-
 interface CalendarListState {
     loading: boolean,
-    calendarMap: Map<string, Calendar> | null,
+    calendarEntryMap: Map<string, CalendarEntry> | null,
     error: any | null,
     success: boolean
 }
 
 const initialState: CalendarListState = {
     loading: false,
-    calendarMap: null,
+    calendarEntryMap: null,
     error: null,
     success: false,
 
@@ -46,26 +36,31 @@ const calendarListSlice = createSlice({
     reducers: {
         setCalendarAsActive(state, action) {
             const id: string = action.payload.id;
-            let mutatedMap = new Map(state.calendarMap);
-            let calendarObj: Calendar | undefined = mutatedMap.get(id);
+            const visibility = action.payload.value;
+            let mutatedMap = new Map(state.calendarEntryMap);
+            let calendarObj: CalendarEntry | undefined = mutatedMap.get(id);
             if (!calendarObj)
                 return;
-            calendarObj.active = action.payload.value;
+            calendarObj.visibilitySettings.isVisible = visibility;
             mutatedMap.set(id, calendarObj);
-
-            state.calendarMap = mutatedMap;
+            axios.patch('/calendar/entry', {
+                _id: id,
+                'visibilitySettings': {
+                    'isVisible': visibility,
+                },
+            }).catch(console.log);
+            state.calendarEntryMap = mutatedMap;
         },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchCalendarList.fulfilled, (state, action) => {
             state.loading = false;
-
-            let calendarList: Map<string, Calendar> = new Map();
-            for (let entry of action.payload.calendarEntries) {
-                let id = entry.calendar._id;
-                calendarList.set(id, { ...entry.calendar, active: true });
+            let calendarEntryList: Map<string, CalendarEntry> = new Map();
+            for (let entry of <CalendarEntry[]>action.payload.calendarEntries) {
+                let id = entry._id;
+                calendarEntryList.set(id, entry);
             }
-            state.calendarMap = calendarList;
+            state.calendarEntryMap = calendarEntryList;
             state.success = true;
         });
 
@@ -79,3 +74,8 @@ const calendarListSlice = createSlice({
 
 export const calendarListReducer = calendarListSlice.reducer;
 export const { setCalendarAsActive } = calendarListSlice.actions;
+
+export const selectIdOfVisibleCalendarEntries = (state: RootState) => {
+    return [...state.calendarList.calendarEntryMap.values()]
+        .filter((e: CalendarEntry) => e.visibilitySettings.isVisible);
+};
