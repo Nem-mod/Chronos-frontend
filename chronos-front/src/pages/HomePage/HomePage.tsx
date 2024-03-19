@@ -1,15 +1,20 @@
 import { Main } from '../../components/Main/Main.tsx';
-import { useAppSelector } from '../../hooks/redux-hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks.ts';
 import { SideBar } from '../../components/SideBar/SideBar.tsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { fetchCalendarList } from '../../store/slices/calendarList.ts';
 
 export const HomePage = () => {
     const client = useAppSelector(state => state.auth.userInfo);
+    const dispatch = useAppDispatch();
     let [sidebarActive, setSidebarActive] = useState<boolean>(false);
-
     const handleSidebarAction = () => {
         setSidebarActive(prev => !prev);
     };
+
+    useEffect(() => {
+        dispatch(fetchCalendarList());
+    }, []);
 
     return (
         <div className={'flex min-h-screen'}>

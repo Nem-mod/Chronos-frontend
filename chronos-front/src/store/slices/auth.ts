@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from '../../axios.ts';
-import { RootState } from '../store.ts';
 
 export type Client = {
     username: string | null,
@@ -123,4 +122,3 @@ const authSlice = createSlice({
 
 export const authReducer = authSlice.reducer;
 
-export const getUserInfo = (state: RootState) => state.auth.userInfo;

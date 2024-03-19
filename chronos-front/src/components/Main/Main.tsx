@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Client } from '../../store/slices/auth.ts';
-import sidebar from '../../assets/sidebar.svg';
+import { SidebarButton } from '../SidebarButton/SidebarButton.tsx';
 
 interface Props {
     client: Client;
@@ -23,10 +23,7 @@ export const Main = ({ client, handleSidebarAction, sidebarIsActive }: Props) =>
         <main className={'flex-grow pr-6 pl-6'}>
             <nav className={'min-h-12'}>
                 <div className={'flex h-12 items-center justify-between'}>
-
-                    <div className={'w-5 h-5'} onClick={handleSidebarAction}>
-                        {!sidebarIsActive && <img src={sidebar} alt='#' />}
-                    </div>
+                    <SidebarButton onClick={handleSidebarAction} visible={!sidebarIsActive} />
                     <div className={'text-center pr-4'}>{client?.username} <span
                         className={'ml-2 text-gray-500'}>{client?.email}</span></div>
                 </div>

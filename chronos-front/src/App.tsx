@@ -15,15 +15,16 @@ function App() {
             );
 
             if (error) {
-                console.log(error);
-                navigate('/signin');
-                return;
+                throw error;
             }
 
             navigate('/calendar');
         };
 
-        auth().catch();
+
+        auth().catch(() => {
+            navigate('/signin');
+        });
 
     }, []);
     return (
