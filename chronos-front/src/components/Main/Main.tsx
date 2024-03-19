@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Client } from '../../store/slices/auth.ts';
 import { SidebarButton } from '../SidebarButton/SidebarButton.tsx';
 
@@ -11,14 +9,6 @@ interface Props {
 }
 
 export const Main = ({ client, handleSidebarAction, sidebarIsActive }: Props) => {
-    const navigate = useNavigate();
-    useEffect(() => {
-        if (!client) {
-            navigate('/signin');
-        }
-    }, [client]);
-
-
     return (
         <main className={'flex-grow pr-6 pl-6'}>
             <nav className={'min-h-12'}>
