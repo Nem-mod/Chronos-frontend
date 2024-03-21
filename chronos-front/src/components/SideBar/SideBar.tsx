@@ -9,10 +9,10 @@ import { CalendarEntry } from '../../store/slices/calendarListSlice/types.ts';
 export const SideBar = () => {
     const calendarMap: Map<string, CalendarEntry> = useAppSelector(state => state.calendarList.calendarEntryMap);
     return (
-        <aside className={'pl-6 pr-6 basis-2/12 border-gray-400 border-r-2 bg-gray-100'}>
-            <div className={'flex h-12 items-center justify-between'}>
+        <aside className={'6 basis-2/12'}>
+            <div className={'mt-6'}>
+                <CalendarCheckList name={'My list'} calendarEntryMap={calendarMap} />
             </div>
-            <CalendarCheckList name={'My list'} calendarEntryMap={calendarMap} />
         </aside>
     );
 };

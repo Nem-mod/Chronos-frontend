@@ -8,6 +8,7 @@ import { SettingsPage } from '../pages/SettingsPage/SettingsPage.tsx';
 import { ProtectedRoutes } from '../components/ProtectedRoute/ProtectedRoutes.tsx';
 import App from '../App.tsx';
 import { CalendarSettings } from '../components/CalendarSettings/CalendarSettings.tsx';
+import { CalendarCreationPage } from '../pages/CalendarCreationPage/CalendarCreationPage.tsx';
 
 export const router = createBrowserRouter([
     {
@@ -42,6 +43,10 @@ export const router = createBrowserRouter([
                     {
                         path: 'calendar/:id',
                         element: <CalendarSettings />,
+                    },
+                    {
+                        path: 'create-calendar',
+                        element: <CalendarCreationPage />,
                     },
                 ],
             },

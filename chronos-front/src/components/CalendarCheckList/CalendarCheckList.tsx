@@ -1,5 +1,5 @@
 // import { setCalendarAsActive } from '../../store/slices/calendarList.ts';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useAppDispatch } from '../../hooks/redux-hooks.ts';
 import { CalendarCheckEntry } from '../CalendarCheckEntry/CalendarCheckEntry.tsx';
 import { CalendarEntry } from '../../store/slices/calendarListSlice/types.ts';
@@ -12,7 +12,6 @@ interface Props {
 
 export const CalendarCheckList = ({ name, calendarEntryMap }: Props) => {
     const dispatch = useAppDispatch();
-    let [check, setCheck] = useState<boolean>(false);
     let calendarEntryList: CalendarEntry[] = useMemo(() => Array.from(calendarEntryMap.values()), [calendarEntryMap]);
 
     const handleCalendarStatusCallback = (id: string, value: boolean) => {
@@ -21,16 +20,13 @@ export const CalendarCheckList = ({ name, calendarEntryMap }: Props) => {
             value,
         }));
     };
-    const handleOpen = () => {
-        setCheck(prevState => !prevState);
-    };
+
     return (
-        <div className='collapse collapse-arrow join-item  border-base-500'>
-            <input onClick={handleOpen} type='radio' name='my-accordion-4' checked={check} />
-            <div className='collapse-title text-md font-medium'>
+        <div className=''>
+            <div className='pl-6 text-xl'>
                 {name}
             </div>
-            <div className='collapse-content'>
+            <div className='mt-1'>
                 <ul>
                     {calendarEntryList && calendarEntryList.map((e) => (
                             <CalendarCheckEntry
