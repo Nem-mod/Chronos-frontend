@@ -1,4 +1,4 @@
-import { TextField } from '../../components/InputFields/TextField.tsx';
+import { TextField } from '../../components/AuthInputFields/TextField.tsx';
 import { createTsForm } from '@ts-react/form';
 import { z } from 'zod';
 import { Link, useNavigate } from 'react-router-dom';

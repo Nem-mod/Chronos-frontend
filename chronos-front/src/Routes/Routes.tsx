@@ -6,11 +6,13 @@ import { VerifyPage } from '../pages/VerifyPage/VerifyPage.tsx';
 import { HomePage } from '../pages/HomePage/HomePage.tsx';
 import { SettingsPage } from '../pages/SettingsPage/SettingsPage.tsx';
 import { ProtectedRoutes } from '../components/ProtectedRoute/ProtectedRoutes.tsx';
-import { CalendarSettings } from '../pages/CalendarSettings.tsx';
+import App from '../App.tsx';
+import { CalendarSettings } from '../components/CalendarSettings/CalendarSettings.tsx';
 
 export const router = createBrowserRouter([
     {
         path: '/',
+        element: <App />,
         errorElement: <ErrorPage />,
     },
     {

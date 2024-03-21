@@ -12,8 +12,8 @@ export const SettingsSideBar = () => {
     const handleOpenCalendarSetting = (id: string) => navigate(`calendar/${id}`);
 
     return (
-        <aside className={'pr-6 basis-2/12 border-gray-400 border-r-2 bg-gray-100'}>
-            <h3 className={'pl-6 mt-20'}>My calendars</h3>
+        <aside className={'pr-6 basis-2/12'}>
+            <h3 className={'pl-6 mt-6 text-xl'}>My calendars</h3>
             <div>
                 <ul className={'mt-4'}>
                     {calendarEntryList.map(e => (

@@ -9,7 +9,7 @@ export const SettingsPage = () => {
     const handleCloseSettings = () => navigate('/calendar');
     return (
         <div>
-            <NavBar navNode={<SidebarButton onClick={handleCloseSettings} icon={arrow} />}>
+            <NavBar navNode={<SidebarButton onClick={handleCloseSettings} icon={arrow} name={'Settings'} />}>
             </NavBar>
             <div className={'flex min-h-screen'}>
                 <SettingsSideBar />
