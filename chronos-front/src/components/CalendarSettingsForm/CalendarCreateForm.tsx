@@ -2,16 +2,15 @@ import { TextField } from '../SettingsInputFields/TextField.tsx';
 import { SelectTimeZone } from '../SettingsInputFields/SelectTimeZone.tsx';
 import { useState } from 'react';
 import { useAppDispatch } from '../../hooks/redux-hooks.ts';
-import { fetchCreteCalendar } from '../../store/slices/calendarListSlice/calendarList.ts';
+import { fetchCreateCalendar } from '../../store/slices/calendarListSlice/calendarList.ts';
 
 export const CalendarCreateForm = () => {
     const dispatch = useAppDispatch();
     let [selectedTimezone, setSelectedTimezone] = useState<string>(Intl.DateTimeFormat().resolvedOptions().timeZone);
     let [calendarName, setCalendarName] = useState<string>('');
     let [calendarDescription, setCalendarDescription] = useState<string>('');
-    // TODO : add rerender of calendarEntries after back is refactored
     const handleSubmit = async () => {
-        await dispatch(fetchCreteCalendar({
+        await dispatch(fetchCreateCalendar({
             name: calendarName,
             description: calendarDescription,
             timezone: selectedTimezone,

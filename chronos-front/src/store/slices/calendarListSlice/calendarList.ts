@@ -20,23 +20,25 @@ export const fetchCalendarList = createAsyncThunk<TCalendarEntries, void, { reje
 );
 
 
-export const fetchCreteCalendar = createAsyncThunk<Calendar, Calendar, { rejectValue: string }>(
+type PatchCalendar = {
+    calendar: Calendar,
+    calendarEntryId: string
+}
+
+
+export const fetchCreateCalendar = createAsyncThunk<{ calendarEntry: CalendarEntry, calendar: Calendar }, Calendar, {
+    rejectValue: string
+}>(
     'calendarList/create/calendar',
     async (props, { rejectWithValue }) => {
         try {
             const response = await axios.post('/calendar', props);
-            return response.data as Calendar;
+            return response.data as CalendarEntry;
         } catch (error: any) {
             return rejectWithValue(error.message);
         }
     },
 );
-
-
-type PatchCalendar = {
-    calendar: Calendar,
-    calendarEntryId: string
-}
 
 export const fetchUpdateCalendar = createAsyncThunk<PatchCalendar, PatchCalendar, { rejectValue: string }>(
     'calendarList/patch/calendar',
@@ -124,20 +126,38 @@ const calendarListSlice = createSlice({
             state.success = false;
         });
 
-        builder.addCase(fetchUpdateCalendar.fulfilled, (state, action) => {
-            console.log('AAA');
-            let { calendarEntryId, calendar } = action.payload;
-            let calendarEntryMap = state.calendarEntryMap;
-
-            if (!calendarEntryMap)
+        builder.addCase(fetchCreateCalendar.fulfilled, (state, action) => {
+            if (!state.calendarEntryMap)
                 return;
-            let calendarEntry = calendarEntryMap.get(calendarEntryId);
+
+            let calendarEntry = {
+                ...action.payload.calendarEntry,
+                calendar: action.payload.calendar,
+            };
+            state.calendarEntryMap.set(calendarEntry._id, calendarEntry);
+
+            state.loading = false;
+            state.success = true;
+        });
+
+        builder.addCase(fetchCreateCalendar.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error;
+            state.success = false;
+        });
+
+
+        builder.addCase(fetchUpdateCalendar.fulfilled, (state, action) => {
+            let { calendarEntryId, calendar } = action.payload;
+            if (!state.calendarEntryMap)
+                return;
+
+            let calendarEntry = state.calendarEntryMap.get(calendarEntryId);
 
             if (!calendarEntry)
                 return;
-            calendarEntryMap.set(calendarEntryId, { ...calendarEntry, calendar });
 
-            state.calendarEntryMap = calendarEntryMap;
+            state.calendarEntryMap.set(calendarEntryId, { ...calendarEntry, calendar });
             state.loading = false;
             state.success = true;
         });
@@ -149,15 +169,10 @@ const calendarListSlice = createSlice({
         });
 
         builder.addCase(fetchDeleteCalendar.fulfilled, (state, action) => {
-            console.log('BBB');
-            let { calendarEntryId } = action.payload;
-            let calendarEntryMap = state.calendarEntryMap;
-
-            if (!calendarEntryMap)
+            if (!state.calendarEntryMap)
                 return;
-
-            calendarEntryMap.delete(calendarEntryId);
-            state.calendarEntryMap = calendarEntryMap;
+            let { calendarEntryId } = action.payload;
+            state.calendarEntryMap.delete(calendarEntryId);
             state.loading = false;
             state.success = true;
         });

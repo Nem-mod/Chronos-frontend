@@ -9,13 +9,14 @@ export const CalendarSettings = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     let { id } = useParams() as { id: string };
-    let { calendar, _id: calendarEntryId } = useAppSelector(state => selectCalendarEntryById(state, id));
+    let calendarEntry = useAppSelector(state => selectCalendarEntryById(state, id));
 
+    let { calendar, _id: calendarEntryId } = calendarEntry;
     const handleDeleteCalendar = async () => {
+        navigate('/calendar/settings');
         let { error } = await dispatch(fetchDeleteCalendar({ calendarEntryId, calendarId: calendar._id }));
         if (error)
             return;
-        navigate('/calendar/settings');
     };
     return (
         <div className={'flex-grow'}>
