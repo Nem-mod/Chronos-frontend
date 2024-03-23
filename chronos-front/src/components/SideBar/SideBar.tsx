@@ -1,26 +1,17 @@
-import sidebar from '../../assets/sidebar.svg';
-import useFetch, { HttpMethods } from '../../hooks/use-fetch-hook.ts';
+import { useAppSelector } from '../../hooks/redux-hooks.ts';
+import { CalendarCheckList } from '../CalendarCheckList/CalendarCheckList.tsx';
+import { CalendarEntry } from '../../store/slices/calendarListSlice/types.ts';
+//
+// interface Props {
+//     handleSidebarAction: () => void;
+// }
 
-interface Props {
-    handleSidebarAction: () => void;
-}
-
-export const SideBar = ({ handleSidebarAction }: Props) => {
-    const [data, loading, error] = useFetch('/calendar/list', HttpMethods.get, {});
-    
+export const SideBar = () => {
+    const calendarMap: Map<string, CalendarEntry> = useAppSelector(state => state.calendarList.calendarEntryMap);
     return (
-        <aside className={'pl-6 basis-2/12 border-gray-400 border-r-2 bg-gray-100'}>
-            <div className={'flex h-12 items-center justify-between'}>
-                <div className={'w-5 h-5'} onClick={handleSidebarAction}>
-                    <img src={sidebar} alt='#' />
-                </div>
-            </div>
-
-            <div>
-                My calendars
-            </div>
-            <div>
-                Other calendars
+        <aside className={'6 basis-2/12'}>
+            <div className={'mt-6'}>
+                <CalendarCheckList name={'My list'} calendarEntryMap={calendarMap} />
             </div>
         </aside>
     );
