@@ -3,30 +3,48 @@
 
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid"
-import interactionPlugin, {Draggable} from "@fullcalendar/interaction";
+import timeGridPlugin from "@fullcalendar/timegrid"
+// import interactionPlugin, {Draggable} from "@fullcalendar/interaction";
+import interactionPlugin from "@fullcalendar/interaction";
 import { useEffect, useState } from "react";
+import EventProp from "./EventProp.tsx";
+import { DateSelectArg, EventClickArg } from "@fullcalendar/core";
+
+import "../../index.css"
 
 export const CalendarTest = () => {
 
     const [events, setEvents] = useState<any[]>([])
-    const handleDateClick = (arg: any) => {
-        let eventName: string | null;
-        try {
-            eventName = prompt('Enter event name');
-        }
-        catch {
-            return;
-        }
-        if (typeof(eventName) == "undefined" || eventName === "") {
-            return;
-        }
+    const handleDateSelect = (selectInfo: DateSelectArg) => {
+        let title = prompt("Enter event name");
+        let calendarAPI = selectInfo.view.calendar;
 
-        setEvents(events.concat({eventColor: 'red', title: eventName, date: arg.dateStr, allDay: true}))
+        calendarAPI.unselect();
+
+        if (title) {
+            calendarAPI.addEvent({
+                title: title,
+                start: selectInfo.startStr,
+                end: selectInfo.endStr,
+                allDay: selectInfo.allDay
+            })
+        }
     }
 
-    useEffect(() => {
-        console.log(events)
-    }, [events]);
+    const handleEvents = (eventsInfo: any) => {
+        console.log(eventsInfo)
+        setEvents(eventsInfo)
+    }
+
+    const handleEventClick = (clickInfo: EventClickArg) => {
+        if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+            clickInfo.event.remove()
+        }
+    }
+
+    // useEffect(() => {
+    //     console.log(events)
+    // }, [events]);
 
 
 
@@ -35,13 +53,13 @@ export const CalendarTest = () => {
             className={''}
         >
             <FullCalendar
-                plugins={[dayGridPlugin, interactionPlugin]}
-                initialView={"dayGridWeek"}
-                eventDisplay={'auto'}
+                plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                initialView={"timeGridWeek"}
+                eventDisplay={'block'}
                 headerToolbar={{
                   left: 'prev,next',
                   center: 'title',
-                  right: 'dayGridWeek,dayGridMonth',
+                  right: 'timeGridWeek,dayGridMonth',
                 }}
                 weekends={true}
                 nowIndicator={true}
@@ -52,10 +70,14 @@ export const CalendarTest = () => {
                     day: 'numeric',
                     weekday: 'short'
                 }}
-                dateClick={handleDateClick}
-                events={events}
+                select={handleDateSelect}
+                // events={events}
                 droppable={true}
                 editable={true}
+                selectable={true}
+                eventContent={EventProp}
+                eventsSet={handleEvents}
+                eventClick={handleEventClick}
             />
         </div>
   );
