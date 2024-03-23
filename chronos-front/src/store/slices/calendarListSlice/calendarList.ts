@@ -25,15 +25,14 @@ type PatchCalendar = {
     calendarEntryId: string
 }
 
+type TCreateCalendar = { calendarEntry: CalendarEntry, calendar: Calendar }
 
-export const fetchCreateCalendar = createAsyncThunk<{ calendarEntry: CalendarEntry, calendar: Calendar }, Calendar, {
-    rejectValue: string
-}>(
+export const fetchCreateCalendar = createAsyncThunk<TCreateCalendar, Calendar, { rejectValue: string }>(
     'calendarList/create/calendar',
     async (props, { rejectWithValue }) => {
         try {
             const response = await axios.post('/calendar', props);
-            return response.data as CalendarEntry;
+            return response.data;
         } catch (error: any) {
             return rejectWithValue(error.message);
         }
