@@ -1,3 +1,45 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/*.fc-scrollgrid-section {*/
+/*    @apply bg-indigo-400*/
+/*}*/
+
+/* HEADER CONTAINER */
+.fc-col-header-cell, fc-scrollgrid-sync-inner {
+    @apply bg-gray-200 !important
+}
+
+/* DAY CONTAINER */
+.fc-day {
+    @apply bg-transparent
+}
+
+/* TODAY CONTAINER */
+/* P.S. includes the header (dk how to fix) */
+/* TODO: Fix header part being changed */
+.fc-day-today, fc-daygrid-day-frame {
+    @apply bg-amber-100 !important
+}
+
+
+.fc-day, .fc-dayGridWeek-view > *, .fc-dayGridMonth-view > *{
+    @apply border-black !important
+}
+
+/* TITLE TEXT (TOP) */
+.fc-toolbar-title {
+    @apply text-3xl text-black font-semibold !important
+}
+
+
+/* TOOLBAR BUTTONS */
+.fc-button {
+    /*@apply bg-red-700 !important*/
+}
+
+.fc-button-group {
+    @apply flex gap-2 !important
+}
