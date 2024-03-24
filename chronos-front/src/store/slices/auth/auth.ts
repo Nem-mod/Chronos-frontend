@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from '../../axios.ts';
+import axios from '../../../axios.ts';
 
 export type Client = {
     username: string | null,
@@ -43,6 +43,19 @@ export const fetchAuthMe = createAsyncThunk(
         }
     },
 );
+
+export const fetchUpdateProfile = createAsyncThunk<Client, Client, { rejectValue: string }>(
+    'auth/update',
+    async (params: any, { rejectWithValue }) => {
+        try {
+            const response = await axios.patch('/auth/profile', params);
+            return response.data;
+        } catch (error: any) {
+            return rejectWithValue(error.message);
+        }
+    },
+);
+
 
 export const fetchVerify = createAsyncThunk(
     'auth/verify/',
@@ -116,6 +129,22 @@ const authSlice = createSlice({
             state.error = action.error;
             state.success = false;
         });
+
+        builder.addCase(fetchUpdateProfile.fulfilled, (state, action) => {
+            state.loading = false;
+            state.userInfo = {
+                username: action.payload.username,
+                email: action.payload.email,
+            };
+            state.success = true;
+        });
+
+        builder.addCase(fetchUpdateProfile.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error;
+            state.success = false;
+        });
+
 
     },
 });

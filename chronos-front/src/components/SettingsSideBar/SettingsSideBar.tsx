@@ -17,6 +17,9 @@ export const SettingsSideBar = () => {
     return (
         <aside className={'flex flex-col pr-6 basis-2/12 '}>
             <div className={'pl-6 mt-6 p-2 text-xl rounded-r-lg hover:bg-blue-100'}>
+                <Link to={'account'}>Account settings</Link>
+            </div>
+            <div className={'pl-6 mt-6 p-2 text-xl rounded-r-lg hover:bg-blue-100'}>
                 <Link to={'create-calendar'}>Create Calendar</Link>
             </div>
             <div>

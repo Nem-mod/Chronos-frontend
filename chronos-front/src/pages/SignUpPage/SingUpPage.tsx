@@ -2,10 +2,10 @@ import { TextField } from '../../components/AuthInputFields/TextField.tsx';
 import { createTsForm } from '@ts-react/form';
 import { z } from 'zod';
 import { Link } from 'react-router-dom';
-import { fetchRegister, fetchVerify } from '../../store/slices/auth.ts';
 import { useAppDispatch } from '../../hooks/redux-hooks.ts';
 import { webURL } from '../../axios.ts';
 import { useState } from 'react';
+import { fetchRegister, fetchVerify } from '../../store/slices/auth/auth.ts';
 
 const mapping = [[z.string(), TextField]] as const;
 const SignUpForm = createTsForm(mapping);

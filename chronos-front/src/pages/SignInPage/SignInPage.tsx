@@ -3,7 +3,7 @@ import { createTsForm } from '@ts-react/form';
 import { z } from 'zod';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/redux-hooks.ts';
-import { fetchAuth } from '../../store/slices/auth.ts';
+import { fetchAuth } from '../../store/slices/auth/auth.ts';
 
 const mapping = [[z.string(), TextField]] as const;
 const SignInForm = createTsForm(mapping);
