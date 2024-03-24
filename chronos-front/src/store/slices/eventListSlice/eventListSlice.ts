@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Event } from './types.ts';
 import axios from '../../../axios.ts';
+import { RootState } from '../../store.ts';
 
 export const fetchCreateEvent = createAsyncThunk<Event, Event, { rejectValue: string }>(
     'eventList/create/event',
@@ -92,3 +93,7 @@ const eventListSlice = createSlice({
 
 export const eventListReducer = eventListSlice.reducer;
 
+
+export const getEvents = (state: RootState) => {
+    return state.eventList.eventList;
+};

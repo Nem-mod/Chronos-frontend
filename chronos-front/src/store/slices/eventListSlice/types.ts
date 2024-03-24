@@ -32,11 +32,11 @@ export type RecurrenceSettings = {
 }
 
 export type Event = {
-    calendarId: number
+    calendar: string
     name: string
     description?: string
     timezone: string
-    isAllDay?: boolean
+    isAllDay: boolean
     start: Date
     end: Date
     taskSettings?: TaskSettings
