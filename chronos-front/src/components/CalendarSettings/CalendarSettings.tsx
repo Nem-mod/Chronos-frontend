@@ -1,5 +1,8 @@
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks.ts';
-import { fetchDeleteCalendar, selectCalendarEntryById } from '../../store/slices/calendarListSlice/calendarList.ts';
+import {
+    fetchDeleteCalendar,
+    selectCalendarEntryById,
+} from '../../store/slices/calendarListSlice/calendarListSlice.ts';
 import { useParams } from 'react-router';
 import { CalendarSettingsForm } from '../CalendarSettingsForm/CalendarSettingsForm.tsx';
 import { useNavigate } from 'react-router-dom';

@@ -189,7 +189,8 @@ export const { setCalendarAsActive } = calendarListSlice.actions;
 
 export const selectIdOfVisibleCalendarEntries = (state: RootState) => {
     return [...state.calendarList.calendarEntryMap.values()]
-        .filter((e: CalendarEntry) => e.visibilitySettings.isVisible);
+        .filter((e: CalendarEntry) => e.visibilitySettings.isVisible)
+        .map((e: CalendarEntry) => e.calendar._id);
 };
 
 

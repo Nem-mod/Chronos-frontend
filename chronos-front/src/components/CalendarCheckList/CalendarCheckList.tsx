@@ -1,9 +1,9 @@
-// import { setCalendarAsActive } from '../../store/slices/calendarList.ts';
+// import { setCalendarAsActive } from '../../store/slices/calendarListSlice.ts';
 import { useMemo } from 'react';
 import { useAppDispatch } from '../../hooks/redux-hooks.ts';
 import { CalendarCheckEntry } from '../CalendarCheckEntry/CalendarCheckEntry.tsx';
 import { CalendarEntry } from '../../store/slices/calendarListSlice/types.ts';
-import { setCalendarAsActive } from '../../store/slices/calendarListSlice/calendarList.ts';
+import { setCalendarAsActive } from '../../store/slices/calendarListSlice/calendarListSlice.ts';
 
 interface Props {
     name: string;

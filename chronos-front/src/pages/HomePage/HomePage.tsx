@@ -2,7 +2,7 @@ import { Main } from '../../components/Main/Main.tsx';
 import { useAppDispatch } from '../../hooks/redux-hooks.ts';
 import { SideBar } from '../../components/SideBar/SideBar.tsx';
 import { useEffect, useState } from 'react';
-import { fetchCalendarList } from '../../store/slices/calendarListSlice/calendarList.ts';
+import { fetchCalendarList } from '../../store/slices/calendarListSlice/calendarListSlice.ts';
 import { useNavigate } from 'react-router-dom';
 import { NavBar } from '../../components/NavBar/NavBar.tsx';
 import { SidebarButton } from '../../components/SidebarButton/SidebarButton.tsx';

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/redux-hooks.ts';
 import { webURL } from '../../axios.ts';
 import { useState } from 'react';
-import { fetchRegister, fetchVerify } from '../../store/slices/auth/auth.ts';
+import { fetchRegister, fetchVerify } from '../../store/slices/auth/authSlice.ts';
 
 const mapping = [[z.string(), TextField]] as const;
 const SignUpForm = createTsForm(mapping);

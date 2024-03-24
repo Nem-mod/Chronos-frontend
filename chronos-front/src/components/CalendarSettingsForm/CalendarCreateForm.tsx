@@ -2,7 +2,7 @@ import { TextField } from '../SettingsInputFields/TextField.tsx';
 import { SelectTimeZone } from '../SettingsInputFields/SelectTimeZone.tsx';
 import { useState } from 'react';
 import { useAppDispatch } from '../../hooks/redux-hooks.ts';
-import { fetchCreateCalendar } from '../../store/slices/calendarListSlice/calendarList.ts';
+import { fetchCreateCalendar } from '../../store/slices/calendarListSlice/calendarListSlice.ts';
 
 export const CalendarCreateForm = () => {
     const dispatch = useAppDispatch();

@@ -1,7 +1,7 @@
 import { TextField } from '../SettingsInputFields/TextField.tsx';
 import { SelectTimeZone } from '../SettingsInputFields/SelectTimeZone.tsx';
 import { useEffect, useState } from 'react';
-import { fetchUpdateCalendar } from '../../store/slices/calendarListSlice/calendarList.ts';
+import { fetchUpdateCalendar } from '../../store/slices/calendarListSlice/calendarListSlice.ts';
 import { Calendar } from '../../store/slices/calendarListSlice/types.ts';
 import { useAppDispatch } from '../../hooks/redux-hooks.ts';
 

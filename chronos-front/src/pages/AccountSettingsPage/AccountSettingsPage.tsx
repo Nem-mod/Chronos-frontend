@@ -3,7 +3,7 @@ import { TextField } from '../../components/AuthInputFields/TextField.tsx';
 import { createTsForm } from '@ts-react/form';
 import { useAppDispatch } from '../../hooks/redux-hooks.ts';
 import { useState } from 'react';
-import { fetchUpdateProfile } from '../../store/slices/auth/auth.ts';
+import { fetchUpdateProfile } from '../../store/slices/auth/authSlice.ts';
 
 const mapping = [[z.string(), TextField]] as const;
 const EditProfileForm = createTsForm(mapping);
