@@ -1,14 +1,21 @@
 import { CalendarEntry } from '../../store/slices/calendarListSlice/types.ts';
 import { useAppSelector } from '../../hooks/redux-hooks.ts';
 import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from '../../axios.ts';
 
 export const SettingsSideBar = () => {
+    const navigate = useNavigate();
     const calendarEntryMap: Map<string, CalendarEntry> = useAppSelector(state => state.calendarList.calendarEntryMap);
     let calendarEntryList: CalendarEntry[] = useMemo(() => Array.from(calendarEntryMap.values()), [calendarEntryMap]);
 
+    const handleLogOut = async () => {
+        await axios.post('/auth/logout');
+        navigate('/signin');
+    };
+
     return (
-        <aside className={'pr-6 basis-2/12'}>
+        <aside className={'flex flex-col pr-6 basis-2/12 '}>
             <div className={'pl-6 mt-6 p-2 text-xl rounded-r-lg hover:bg-blue-100'}>
                 <Link to={'create-calendar'}>Create Calendar</Link>
             </div>
@@ -26,6 +33,9 @@ export const SettingsSideBar = () => {
                         ))}
                     </div>
                 </div>
+            </div>
+            <div className={'pl-6 mt-12 mb-6 flex-grow'}>
+                <button onClick={handleLogOut} className='btn btn-outline btn-error text-xl'>Log out</button>
             </div>
         </aside>
     );
