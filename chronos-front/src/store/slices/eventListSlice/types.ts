@@ -37,11 +37,11 @@ export type Event = {
     description?: string
     timezone: string
     isAllDay: boolean
-    start: Date
-    end: Date
+    start?: Date | string
+    end?: Date | string
     taskSettings?: TaskSettings
     recurrenceSettings?: RecurrenceSettings
-    _id: string
+    _id?: string
 
     //
     // "calendar": "65f98852a9860b27a10b4f13",

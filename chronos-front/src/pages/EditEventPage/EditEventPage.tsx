@@ -2,7 +2,7 @@ import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import { Event } from '../../store/slices/eventListSlice/types.ts';
 import axios from '../../axios.ts';
-import { EditEventForm } from '../../components/EditEventForm/EditEventForm.tsx';
+import { EventForm } from '../../components/EventForm/EventForm.tsx';
 
 export const EditEventPage = () => {
     let { id } = useParams() as { id: string };
@@ -26,7 +26,8 @@ export const EditEventPage = () => {
                     <div className={'flex-grow'}>
                         <div className={'mt-6 mb-6'}>
                             <div className={'mt-6'}>
-                                {event && <EditEventForm event={event as Event} />}
+                                {event && <EventForm onSubmit={() => {
+                                }} event={event as Event} />}
                                 {/*<CalendarSettingsForm calendar={calendar} calendarEntryId={calendarEntryId} />*/}
                             </div>
                             {/*<div className={'mt-6'}>*/}

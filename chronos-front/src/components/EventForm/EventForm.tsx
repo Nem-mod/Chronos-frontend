@@ -9,17 +9,18 @@ import { EventRecurrenceDropDown } from '../EventRecurrenceDropDown/EventRecurre
 
 interface Props {
     event: Event;
+    onSubmit: (value: Event) => void;
 }
 
 dayjs.extend(customParseFormat);
-export const EditEventForm = ({ event }: Props) => {
+export const EventForm = ({ event, onSubmit }: Props) => {
     let [eventName, setEventName] = useState<string>(event.name);
-    let [calendarDescription, setCalendarDescription] = useState<string>(event.description || '');
+    let [eventDescription, setEventDescription] = useState<string>(event.description || '');
 
     let [startEvent, setStartEvent] = useState<Dayjs | null>(dayjs(event.start));
     let [endEvent, setEndEvent] = useState<Dayjs | null>(dayjs(event.end));
     let [isAllDay, setIsAllDay] = useState<boolean>(event.isAllDay);
-    let [recurrenceFrequency, setRecurrenceFrequency] = useState<FrequencyEnum>(event.recurrenceSettings?.frequency);
+    let [recurrenceFrequency, setRecurrenceFrequency] = useState<FrequencyEnum>(event.recurrenceSettings?.frequency || FrequencyEnum.DAILY);
 
     // console.log(endEvent?.toISOString());
     return (
@@ -57,20 +58,28 @@ export const EditEventForm = ({ event }: Props) => {
                     Description
                 </span>
 
-                <TextArea value={calendarDescription}
-                          onChange={setCalendarDescription} />
+                <TextArea value={eventDescription}
+                          onChange={setEventDescription} />
             </div>
             <div>
                 <EventRecurrenceDropDown value={recurrenceFrequency} onChange={setRecurrenceFrequency} />
             </div>
 
-            {/*<div>*/}
-            {/*    <p className={'pt-2 pb-2'}>*/}
-            {/*        Time Zone*/}
-            {/*    </p>*/}
-            {/*</div>*/}
-            {/*<SelectTimeZone value={selectedTimezone}*/}
-            {/*                onChangeCallback={setSelectedTimezone} />*/}
+            <button className={'btn'} onClick={() => onSubmit(
+                {
+                    name: eventName,
+                    description: eventDescription,
+                    start: startEvent?.toISOString(),
+                    end: endEvent?.toISOString(),
+                    isAllDay: isAllDay,
+                    recurrenceSettings: {
+                        frequency: recurrenceFrequency,
+                        isNeverStop: true,
+                    },
+
+                } as Event,
+            )}>Submit
+            </button>
         </div>
     );
 };
