@@ -10,6 +10,7 @@ import App from '../App.tsx';
 import { CalendarSettings } from '../components/CalendarSettings/CalendarSettings.tsx';
 import { CalendarCreationPage } from '../pages/CalendarCreationPage/CalendarCreationPage.tsx';
 import { AccountSettingsPage } from '../pages/AccountSettingsPage/AccountSettingsPage.tsx';
+import { EditEventPage } from '../pages/EditEventPage/EditEventPage.tsx';
 
 export const router = createBrowserRouter([
     {
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
             {
                 path: 'calendar',
                 element: <HomePage />,
+            },
+            {
+                path: 'calendar/edit-event/:id',
+                element: <EditEventPage />,
             },
             {
                 path: 'calendar/settings',

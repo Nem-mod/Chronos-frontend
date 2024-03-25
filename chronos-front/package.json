@@ -10,12 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
     "@fullcalendar/core": "^6.1.11",
     "@fullcalendar/daygrid": "^6.1.11",
     "@fullcalendar/interaction": "^6.1.11",
     "@fullcalendar/react": "^6.1.11",
     "@fullcalendar/timegrid": "^6.1.11",
     "@hookform/resolvers": "^3.3.4",
+    "@mui/styled-engine-sc": "^6.0.0-alpha.18",
+    "@mui/x-date-pickers": "^7.0.0",
     "@react-buddy/ide-toolbox": "^2.4.0",
     "@reduxjs/toolkit": "^2.2.1",
     "@ts-react/form": "^1.8.3",
@@ -23,6 +27,7 @@
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.6.7",
     "daisyui": "^4.7.3",
+    "dayjs": "^1.11.10",
     "framer-motion": "^11.0.14",
     "install": "^0.13.0",
     "npm": "^10.5.0",
@@ -36,6 +41,7 @@
     "react-timezone-select": "^3.2.3",
     "redux": "^5.0.1",
     "redux-toolkit": "^1.1.2",
+    "styled-components": "^6.1.8",
     "zod": "^3.22.4"
   },
   "devDependencies": {

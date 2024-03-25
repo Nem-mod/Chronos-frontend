@@ -1,5 +1,6 @@
 import { useAppSelector } from '../../hooks/redux-hooks.ts';
 import { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 
 interface Props {
     children?: ReactNode;
@@ -18,6 +19,7 @@ export const NavBar = ({ children, navNode }: Props) => {
                     <div>{client?.username} <span
                         className={'ml-2 text-gray-500'}>{client?.email}</span>
                     </div>
+                    <Link to={'edit-event/66017caf457e1da28f9a475c'}>Event</Link>
                 </div>
 
             </div>
