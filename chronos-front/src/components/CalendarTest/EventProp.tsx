@@ -12,11 +12,6 @@ function EventProp(eventInfo) {
 			className={'flex flex-col'}
 		>
 			<span
-				className={'text-s bg-red text-black'}
-			>
-				{eventInfo.event.startStr}
-			</span>
-			<span
 				className={'text-sm'}
 			>
 				{eventInfo.event.title}

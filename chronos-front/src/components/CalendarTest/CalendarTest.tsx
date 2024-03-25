@@ -15,13 +15,20 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks.ts';
 import { getParentCalendar } from '../../store/slices/calendarListSlice/calendarListSlice.ts';
 import { CalendarEntry } from '../../store/slices/calendarListSlice/types.ts';
 import { useSelector } from 'react-redux';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export const CalendarTest = () => {
     const dispatch = useAppDispatch();
     const parentCalendar: CalendarEntry = useAppSelector(getParentCalendar);
-    const handleCreateEvent = (event: Event) => {
-        dispatch(fetchCreateEvent(event));
+    const handleCreateEvent = async(event: Event) => {
+        return dispatch(fetchCreateEvent(event));
     };
+
+    const navigate = useNavigate();
+
+    const [popup, setPopup] = useState(false);
+    const [eventInfo, setEventInfo] = useState<any>(null)
 
     let events: Event[] = useSelector(getEvents);
     let eventsForView = events.map(e => {
@@ -29,23 +36,24 @@ export const CalendarTest = () => {
             title: e.name,
             start: e.start,
             end: e.end,
+            id: e._id
         };
     });
     // const [events, setEvents] = useState<any[]>([]);
 
     const handleDateSelect = (selectInfo: DateSelectArg) => {
-        let title = prompt('Enter event name');
+        let title = '(No title)'
         let calendarAPI = selectInfo.view.calendar;
 
         calendarAPI.unselect();
 
         if (title) {
-            calendarAPI.addEvent({
-                title: title,
-                start: selectInfo.startStr,
-                end: selectInfo.endStr,
-                allDay: selectInfo.allDay,
-            });
+            // calendarAPI.addEvent({
+            //     title: title,
+            //     start: selectInfo.startStr,
+            //     end: selectInfo.endStr,
+            //     allDay: selectInfo.allDay,
+            // });
             // Есть кентри у него каленадрь, нам нужен ид именно календаря в ентри
             let event: Event = {
                 calendar: parentCalendar.calendar._id,
@@ -57,7 +65,12 @@ export const CalendarTest = () => {
                 // timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
                 timezone: 'Europe/Kyiv',
             };
-            handleCreateEvent(event);
+            handleCreateEvent(event).then((res: any) => {
+                if (!res.error) {
+                    console.log(res)
+                    navigate(`edit-event/${res.payload._id}`)
+                }
+            });
         }
     };
 
@@ -67,9 +80,12 @@ export const CalendarTest = () => {
     // };
 
     const handleEventClick = (clickInfo: EventClickArg) => {
-        if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-            clickInfo.event.remove();
-        }
+        // if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+        //     clickInfo.event.remove();
+        // }
+        setEventInfo(clickInfo.event)
+        console.log(eventInfo)
+        setPopup(!popup);
     };
 
     // useEffect(() => {
@@ -81,6 +97,48 @@ export const CalendarTest = () => {
         <div
             className={''}
         >
+            <input type="checkbox" className={'modal-toggle'}/>
+            <div
+                // onClick={() => setPopup(false)}
+                className={
+                    (popup ? "modal-open" : "") + " " +
+                    "modal "
+                }
+            >
+                <div
+                    className={'modal-box flex flex-col gap-4'}
+                >
+                    {eventInfo &&
+                        <div className={'flex flex-col gap-3 p-2'}>
+                            <span>Title: {eventInfo.title}</span>
+                            <span>Start: {eventInfo.startStr}</span>
+                            <span>End: {eventInfo.endStr}</span>
+                        </div>
+                    }
+                    <div
+                        className={'flex flex-row justify-around'}
+                    >
+                        <Link
+                            to={`edit-event/${eventInfo?.id}`}
+                            className={'btn btn-neutral btn-info'}
+                        >
+                            Edit
+                        </Link>
+                        <button
+                            className={'btn btn-neutral btn-error'}
+                        >
+                            Delete
+                        </button>
+                        <button
+                            className={'btn btn-neutral btn-warning'}
+                            onClick={() => setPopup(false)}
+                        >
+                            Cancel
+                        </button>
+                    </div>
+
+                </div>
+            </div>
             <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                 initialView={'timeGridWeek'}
