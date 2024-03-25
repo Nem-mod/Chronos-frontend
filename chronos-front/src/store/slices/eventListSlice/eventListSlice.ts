@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Event } from './types.ts';
 import axios from '../../../axios.ts';
 import { RootState } from '../../store.ts';
+import { AsyncThunkConfig, GetThunkAPI } from '@reduxjs/toolkit/dist/createAsyncThunk';
 
 export const fetchCreateEvent = createAsyncThunk<Event, Event, { rejectValue: string }>(
     'eventList/create/event',
@@ -14,6 +15,19 @@ export const fetchCreateEvent = createAsyncThunk<Event, Event, { rejectValue: st
         }
     },
 );
+
+export const fetchUpdateEvent = createAsyncThunk<Event, Event, GetThunkAPI<AsyncThunkConfig>>(
+    'eventList/update/event',
+    async (props, { rejectWithValue }) => {
+        try {
+            const response = await axios.post('/event', props);
+            return response.data as Event;
+        } catch (error: any) {
+            return rejectWithValue(error.message);
+        }
+    },
+);
+
 
 // WIP: mb refactor later
 type TGetEvents = {
@@ -82,6 +96,17 @@ const eventListSlice = createSlice({
         builder.addCase(fetchGetVisibleEvents.fulfilled, (state, action) => {
 
             state.eventList = action.payload;
+            state.loading = false;
+            state.success = true;
+        });
+
+        builder.addCase(fetchUpdateEvent.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error;
+            state.success = false;
+        });
+
+        builder.addCase(fetchUpdateEvent.fulfilled, (state, action) => {
             state.loading = false;
             state.success = true;
         });

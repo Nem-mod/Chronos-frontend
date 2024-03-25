@@ -41,6 +41,7 @@ export type Event = {
     end: Date
     taskSettings?: TaskSettings
     recurrenceSettings?: RecurrenceSettings
+    _id: string
 
     //
     // "calendar": "65f98852a9860b27a10b4f13",
