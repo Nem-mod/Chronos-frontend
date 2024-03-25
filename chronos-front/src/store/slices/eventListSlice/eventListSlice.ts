@@ -28,13 +28,11 @@ export const fetchGetVisibleEvents = createAsyncThunk<Event[], TGetEvents, { rej
             const promises = urls.map(fetchURL);
 
             const results = await Promise.all(promises.map(p => p.catch(e => e)));
-            const validResults: Event[][] = results.filter(result => !(result instanceof Error))
-                .map(e => {
+            const validResults: Event[] = results.filter(result => !(result instanceof Error))
+                .flatMap(e => {
                     return e.data as Event[];
                 });
-            return validResults.reduce((prev, next) => {
-                return prev.concat(next);
-            });
+            return validResults;
         } catch (error: any) {
             return rejectWithValue(error.message);
         }
