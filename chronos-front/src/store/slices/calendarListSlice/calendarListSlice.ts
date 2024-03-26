@@ -90,21 +90,21 @@ const calendarListSlice = createSlice({
     name: 'calendarList',
     reducers: {
         setCalendarAsActive(state: CalendarListState, action: PayloadAction<{ id: string, value: boolean }>) {
+            if (!state.calendarEntryMap)
+                return;
             const id: string = action.payload.id;
             const visibility = action.payload.value;
-            let mutatedMap = new Map(state.calendarEntryMap);
-            let calendarObj: CalendarEntry | undefined = mutatedMap.get(id);
+            let calendarObj: CalendarEntry | undefined = state.calendarEntryMap.get(id);
             if (!calendarObj)
                 return;
             calendarObj.visibilitySettings.isVisible = visibility;
-            mutatedMap.set(id, calendarObj);
             axios.patch('/calendar/entry', {
                 _id: id,
                 'visibilitySettings': {
                     'isVisible': visibility,
                 },
             }).catch(console.log);
-            state.calendarEntryMap = mutatedMap;
+            state.calendarEntryMap.set(id, calendarObj);
         },
         setCalendarColor(state: CalendarListState, action: PayloadAction<{ id: string, value: string }>) {
             if (!state.calendarEntryMap) {

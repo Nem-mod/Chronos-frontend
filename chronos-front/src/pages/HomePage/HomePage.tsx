@@ -29,7 +29,6 @@ export const HomePage = () => {
         // @ts-ignore
         dispatch(fetchCalendarList());
     }, []);
-
     return (
         <div className={''}>
             <NavBar navNode={<SidebarButton onClick={handleSidebarAction} icon={sidebar} />}>
