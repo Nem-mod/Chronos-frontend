@@ -213,6 +213,8 @@ export const selectIdOfVisibleCalendarEntries = (state: RootState) => {
 
 
 export const selectCalendarEntryById = (state: RootState, id: string) => {
+    if (!state.calendarList.calendarEntryMap)
+        return null;
     return state.calendarList.calendarEntryMap.get(id);
 };
 
