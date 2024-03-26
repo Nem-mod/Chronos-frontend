@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useAppDispatch } from '../../hooks/redux-hooks.ts';
 import { CalendarCheckEntry } from '../CalendarCheckEntry/CalendarCheckEntry.tsx';
 import { CalendarEntry } from '../../store/slices/calendarListSlice/types.ts';
-import { setCalendarAsActive } from '../../store/slices/calendarListSlice/calendarListSlice.ts';
+import { setCalendarAsActive, setCalendarColor } from '../../store/slices/calendarListSlice/calendarListSlice.ts';
 
 interface Props {
     name: string;
@@ -21,6 +21,12 @@ export const CalendarCheckList = ({ name, calendarEntryMap }: Props) => {
         }));
     };
 
+    const handlePickCalendarColor = (id: string, value: string) => {
+        dispatch(setCalendarColor({
+            id,
+            value,
+        }));
+    };
     return (
         <div className=''>
             <div className='pl-6 text-xl'>
@@ -34,7 +40,8 @@ export const CalendarCheckList = ({ name, calendarEntryMap }: Props) => {
                                 calendarEntryId={e._id}
                                 calendar={e.calendar}
                                 checkCallBack={handleCalendarStatusCallback}
-                                visibility={e.visibilitySettings.isVisible}
+                                pickColorCallback={handlePickCalendarColor}
+                                visibility={e.visibilitySettings}
                             />
                         ),
                     )}

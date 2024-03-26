@@ -11,6 +11,7 @@ import { CalendarSettings } from '../components/CalendarSettings/CalendarSetting
 import { CalendarCreationPage } from '../pages/CalendarCreationPage/CalendarCreationPage.tsx';
 import { AccountSettingsPage } from '../pages/AccountSettingsPage/AccountSettingsPage.tsx';
 import { EditEventPage } from '../pages/EditEventPage/EditEventPage.tsx';
+import { InviteRedirectPage } from '../pages/InviteRedirectPage/InviteRedirectPage.tsx';
 
 export const router = createBrowserRouter([
     {
@@ -41,6 +42,10 @@ export const router = createBrowserRouter([
             {
                 path: 'calendar/edit-event/:id',
                 element: <EditEventPage />,
+            },
+            {
+                path: 'calendar/invite',
+                element: <InviteRedirectPage />,
             },
             {
                 path: 'calendar/settings',

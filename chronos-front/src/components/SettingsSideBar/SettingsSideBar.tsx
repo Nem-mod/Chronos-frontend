@@ -7,7 +7,10 @@ import axios from '../../axios.ts';
 export const SettingsSideBar = () => {
     const navigate = useNavigate();
     const calendarEntryMap: Map<string, CalendarEntry> = useAppSelector(state => state.calendarList.calendarEntryMap);
-    let calendarEntryList: CalendarEntry[] = useMemo(() => Array.from(calendarEntryMap.values()), [calendarEntryMap]);
+    if (!calendarEntryMap) {
+        return <></>;
+    }
+    const calendarEntryList: CalendarEntry[] = useMemo(() => Array.from(calendarEntryMap.values()), [calendarEntryMap]);
 
     const handleLogOut = async () => {
         await axios.post('/auth/logout');

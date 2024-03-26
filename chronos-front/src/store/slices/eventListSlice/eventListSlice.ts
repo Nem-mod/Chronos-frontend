@@ -20,7 +20,7 @@ export const fetchUpdateEvent = createAsyncThunk<Event, Event, GetThunkAPI<Async
     'eventList/update/event',
     async (props, { rejectWithValue }) => {
         try {
-            const response = await axios.post('/event', props);
+            const response = await axios.patch('/event', props);
             return response.data as Event;
         } catch (error: any) {
             return rejectWithValue(error.message);

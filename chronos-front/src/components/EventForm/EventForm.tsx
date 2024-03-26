@@ -75,6 +75,7 @@ export const EventForm = ({ event, onSubmit }: Props) => {
                     recurrenceSettings: {
                         frequency: recurrenceFrequency,
                         isNeverStop: true,
+                        interval: 1,
                     },
 
                 } as Event,

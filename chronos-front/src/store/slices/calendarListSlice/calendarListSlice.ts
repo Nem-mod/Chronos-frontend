@@ -90,21 +90,39 @@ const calendarListSlice = createSlice({
     name: 'calendarList',
     reducers: {
         setCalendarAsActive(state: CalendarListState, action: PayloadAction<{ id: string, value: boolean }>) {
+            if (!state.calendarEntryMap)
+                return;
             const id: string = action.payload.id;
             const visibility = action.payload.value;
-            let mutatedMap = new Map(state.calendarEntryMap);
-            let calendarObj: CalendarEntry | undefined = mutatedMap.get(id);
+            let calendarObj: CalendarEntry | undefined = state.calendarEntryMap.get(id);
             if (!calendarObj)
                 return;
             calendarObj.visibilitySettings.isVisible = visibility;
-            mutatedMap.set(id, calendarObj);
             axios.patch('/calendar/entry', {
                 _id: id,
                 'visibilitySettings': {
                     'isVisible': visibility,
                 },
             }).catch(console.log);
-            state.calendarEntryMap = mutatedMap;
+            state.calendarEntryMap.set(id, calendarObj);
+        },
+        setCalendarColor(state: CalendarListState, action: PayloadAction<{ id: string, value: string }>) {
+            if (!state.calendarEntryMap) {
+                return;
+            }
+            const id: string = action.payload.id;
+            const hexColor = action.payload.value;
+            let calendarObj: CalendarEntry | undefined = state.calendarEntryMap.get(id);
+            if (!calendarObj)
+                return;
+            calendarObj.visibilitySettings.color = hexColor;
+            state.calendarEntryMap.set(id, calendarObj);
+            axios.patch('/calendar/entry', {
+                _id: id,
+                visibilitySettings: {
+                    color: hexColor,
+                },
+            }).catch(console.log);
         },
     },
     extraReducers: (builder) => {
@@ -185,16 +203,20 @@ const calendarListSlice = createSlice({
 });
 
 export const calendarListReducer = calendarListSlice.reducer;
-export const { setCalendarAsActive } = calendarListSlice.actions;
+export const { setCalendarAsActive, setCalendarColor } = calendarListSlice.actions;
 
 export const selectIdOfVisibleCalendarEntries = (state: RootState) => {
+    if (!state.calendarList.calendarEntryMap)
+        return null;
     return [...state.calendarList.calendarEntryMap.values()]
-        .filter((e: CalendarEntry) => e.visibilitySettings.isVisible)
+        .filter((e: CalendarEntry) => e.visibilitySettings?.isVisible)
         .map((e: CalendarEntry) => e.calendar._id);
 };
 
 
 export const selectCalendarEntryById = (state: RootState, id: string) => {
+    if (!state.calendarList.calendarEntryMap)
+        return null;
     return state.calendarList.calendarEntryMap.get(id);
 };
 
