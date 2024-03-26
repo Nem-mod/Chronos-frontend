@@ -206,8 +206,10 @@ export const calendarListReducer = calendarListSlice.reducer;
 export const { setCalendarAsActive, setCalendarColor } = calendarListSlice.actions;
 
 export const selectIdOfVisibleCalendarEntries = (state: RootState) => {
+    if (!state.calendarList.calendarEntryMap)
+        return null;
     return [...state.calendarList.calendarEntryMap.values()]
-        .filter((e: CalendarEntry) => e.visibilitySettings.isVisible)
+        .filter((e: CalendarEntry) => e.visibilitySettings?.isVisible)
         .map((e: CalendarEntry) => e.calendar._id);
 };
 
