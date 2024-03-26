@@ -106,6 +106,24 @@ const calendarListSlice = createSlice({
             }).catch(console.log);
             state.calendarEntryMap = mutatedMap;
         },
+        setCalendarColor(state: CalendarListState, action: PayloadAction<{ id: string, value: string }>) {
+            if (!state.calendarEntryMap) {
+                return;
+            }
+            const id: string = action.payload.id;
+            const hexColor = action.payload.value;
+            let calendarObj: CalendarEntry | undefined = state.calendarEntryMap.get(id);
+            if (!calendarObj)
+                return;
+            calendarObj.visibilitySettings.color = hexColor;
+            state.calendarEntryMap.set(id, calendarObj);
+            axios.patch('/calendar/entry', {
+                _id: id,
+                visibilitySettings: {
+                    color: hexColor,
+                },
+            }).catch(console.log);
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchCalendarList.fulfilled, (state, action) => {
@@ -185,7 +203,7 @@ const calendarListSlice = createSlice({
 });
 
 export const calendarListReducer = calendarListSlice.reducer;
-export const { setCalendarAsActive } = calendarListSlice.actions;
+export const { setCalendarAsActive, setCalendarColor } = calendarListSlice.actions;
 
 export const selectIdOfVisibleCalendarEntries = (state: RootState) => {
     return [...state.calendarList.calendarEntryMap.values()]

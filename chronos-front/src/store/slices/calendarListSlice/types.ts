@@ -14,7 +14,8 @@ export type RemindSettings = {
 }
 
 export type VisibilitySettings = {
-    isVisible: boolean
+    isVisible: boolean,
+    color: string
 }
 
 export type CalendarEntry = {
