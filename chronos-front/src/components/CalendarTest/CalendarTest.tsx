@@ -151,7 +151,9 @@ export const CalendarTest = () => {
                 events={eventsForView}
                 weekends={true}
                 nowIndicator={true}
-                slotDuration={'00:30:00'}
+                slotDuration={'01:00:00'}
+                expandRows={true}
+                stickyHeaderDates={true}
                 titleFormat={{
                     month: 'short',
                     year: 'numeric',

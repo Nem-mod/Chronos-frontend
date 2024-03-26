@@ -4,40 +4,56 @@
 
 
 /*.fc-scrollgrid-section {*/
-/*    @apply bg-indigo-400*/
+/*    @apply border-none !important*/
 /*}*/
 
 /* HEADER CONTAINER */
 .fc-col-header-cell, fc-scrollgrid-sync-inner {
-    @apply bg-gray-200 !important
+    @apply bg-gray-200 dark:bg-gray-800 !important
+}
+
+.fc-col-header-cell-cushion {
+    @apply text-gray-900 dark:text-white !important
 }
 
 /* DAY CONTAINER */
 .fc-day {
-    @apply bg-transparent
+    @apply bg-gray-200 dark:bg-gray-800 max-h-fit
 }
 
 /* TODAY CONTAINER */
 /* P.S. includes the header (dk how to fix) */
 /* TODO: Fix header part being changed */
 .fc-day-today, fc-daygrid-day-frame {
-    @apply bg-amber-100 !important
+    /*@apply bg-amber-100 !important*/
+    @apply bg-gray-400 dark:bg-gray-600 !important
 }
 
+/* Mostly for all the borders */
+/*.fc-day, .fc-dayGridWeek-view > *, .fc-dayGridMonth-view > *{*/
+/*    !*@apply border-black !important*!*/
+/*    @apply border-gray-300 dark:border-gray-700  !important*/
+/*}*/
 
-.fc-day, .fc-dayGridWeek-view > *, .fc-dayGridMonth-view > *{
-    @apply border-black !important
+.fc-day, .fc-timeGridWeek-view > *, .fc-dayGridMonth-view > *, .fc-timegrid-slot{
+    /*@apply border-black !important*/
+    @apply border-gray-300 dark:border-gray-700  !important
+}
+
+.fc-timegrid-slot-label, .fc-timegrid-axis-cushion {
+    @apply text-gray-900 dark:text-white !important
 }
 
 /* TITLE TEXT (TOP) */
 .fc-toolbar-title {
-    @apply text-3xl text-black font-semibold !important
+    @apply text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white !important
 }
 
 
 /* TOOLBAR BUTTONS */
 .fc-button {
     /*@apply bg-red-700 !important*/
+    @apply btn !important
 }
 
 .fc-button-group {
