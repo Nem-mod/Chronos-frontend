@@ -36,7 +36,7 @@ export const fetchAuthMe = createAsyncThunk(
     'auth/me',
     async (params: any, thunkAPI) => {
         try {
-            const responseRefresh = await axios.post('/auth/refresh', params);
+            await axios.post('/auth/refresh', params);
             const response = await axios.get('/auth/profile', params);
             return response.data;
         } catch (error: any) {
