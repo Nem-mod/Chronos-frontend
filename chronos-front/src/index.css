@@ -17,8 +17,8 @@
 }
 
 /* DAY CONTAINER */
-.fc-day {
-    @apply bg-gray-200 dark:bg-gray-800 max-h-fit
+.fc-day, .fc-timegrid-axis {
+    @apply bg-transparent dark:bg-gray-800 max-h-fit
 }
 
 /* TODAY CONTAINER */
@@ -26,7 +26,7 @@
 /* TODO: Fix header part being changed */
 .fc-day-today, fc-daygrid-day-frame {
     /*@apply bg-amber-100 !important*/
-    @apply bg-gray-400 dark:bg-gray-600 !important
+    @apply bg-gray-200 dark:bg-gray-600 dark:border-gray-800 !important
 }
 
 /* Mostly for all the borders */
@@ -53,9 +53,13 @@
 /* TOOLBAR BUTTONS */
 .fc-button {
     /*@apply bg-red-700 !important*/
-    @apply btn !important
+    @apply btn btn-outline !important
 }
 
 .fc-button-group {
     @apply flex gap-2 !important
+}
+
+.fc-header-toolbar {
+    @apply mt-4
 }

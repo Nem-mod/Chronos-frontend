@@ -17,6 +17,8 @@ import { CalendarEntry } from '../../store/slices/calendarListSlice/types.ts';
 import { useSelector } from 'react-redux';
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import trashIcon from "../../assets/trash.svg";
+import editIcon from "../../assets/edit.png";
 
 export const CalendarTest = () => {
     const dispatch = useAppDispatch();
@@ -105,35 +107,56 @@ export const CalendarTest = () => {
                     "modal "
                 }
             >
+
                 <div
                     className={'modal-box flex flex-col gap-4'}
                 >
+                    <div
+                        className={'flex flex-row justify-end'}
+                    >
+                        <button
+                            className={"btn btn-circle btn-outline btn-sm "}
+                            onClick={() => setPopup(false)}
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor"
+                                className={"h-6 w-6"}
+                            >
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
                     {eventInfo &&
                         <div className={'flex flex-col gap-3 p-2'}>
                             <span>Title: {eventInfo.title}</span>
-                            <span>Start: {eventInfo.startStr}</span>
-                            <span>End: {eventInfo.endStr}</span>
+                            <span>Start: {new Date(eventInfo.startStr).toDateString()}</span>
+                            <span>End: {new Date(eventInfo.endStr).toDateString()}</span>
+                            <span>
+                                {/*Duration: {eventInfo.startStr.split('T')[1].split('+')[0]} - {eventInfo.endStr.split('T')[1].split('+')[0]}*/}
+                                Duration: {new Date(eventInfo.startStr).toDateString()}
+                            </span>
                         </div>
                     }
                     <div
                         className={'flex flex-row justify-around'}
                     >
                         <Link
+                            className="btn btn-outline btn-neutral"
                             to={`edit-event/${eventInfo?.id}`}
-                            className={'btn btn-neutral btn-info'}
                         >
+                            <img
+                                src={editIcon} alt=""
+                                className={'h-6 w-6'}
+                            />
                             Edit
                         </Link>
-                        <button
-                            className={'btn btn-neutral btn-error'}
-                        >
+                        <button className="btn btn-outline btn-neutral">
+                            <img
+                                src={trashIcon} alt=""
+                                className={'h-6 w-6'}
+                            />
                             Delete
-                        </button>
-                        <button
-                            className={'btn btn-neutral btn-warning'}
-                            onClick={() => setPopup(false)}
-                        >
-                            Cancel
                         </button>
                     </div>
 
@@ -154,6 +177,7 @@ export const CalendarTest = () => {
                 slotDuration={'01:00:00'}
                 expandRows={true}
                 stickyHeaderDates={true}
+                dayMaxEventRows={4}
                 titleFormat={{
                     month: 'short',
                     year: 'numeric',
