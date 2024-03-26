@@ -6,13 +6,18 @@ import {
 import { useParams } from 'react-router';
 import { CalendarSettingsForm } from '../CalendarSettingsForm/CalendarSettingsForm.tsx';
 import { useNavigate } from 'react-router-dom';
+import { CalendarGuestsForm } from '../CalendarSettingsForm/CalendarGuestsForm.tsx';
 
 
 export const CalendarSettings = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    let { id } = useParams() as { id: string };
-    let calendarEntry = useAppSelector(state => selectCalendarEntryById(state, id));
+    const { id } = useParams() as { id: string };
+    const calendarEntry = useAppSelector(state => selectCalendarEntryById(state, id));
+
+    if (!calendarEntry) {
+        return <></>;
+    }
 
     let { calendar, _id: calendarEntryId } = calendarEntry;
     const handleDeleteCalendar = async () => {
@@ -29,6 +34,9 @@ export const CalendarSettings = () => {
                     <div className={'mt-6 mb-6'}>
                         <div className={'mt-6'}>
                             <CalendarSettingsForm calendar={calendar} calendarEntryId={calendarEntryId} />
+                        </div>
+                        <div className='mt-6'>
+                            <CalendarGuestsForm calendar={calendar} calendarEntryId={calendarEntryId} />
                         </div>
                         <div className={'mt-6'}>
                             <p className={'text-gray-500 text-xl'}>Delete Calendar</p>
