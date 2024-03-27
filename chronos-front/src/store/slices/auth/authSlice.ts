@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from '../../../axios.ts';
 
 export type Client = {
+    _id: string
     username: string | null,
     email: string | null,
     password?: string
@@ -89,6 +90,7 @@ const authSlice = createSlice({
         builder.addCase(fetchRegister.fulfilled, (state, action) => {
             state.loading = false;
             state.userInfo = {
+                _id: action.payload._id,
                 username: action.payload.username,
                 email: action.payload.email,
             };
@@ -104,6 +106,7 @@ const authSlice = createSlice({
         builder.addCase(fetchAuth.fulfilled, (state, action) => {
             state.loading = false;
             state.userInfo = {
+                _id: action.payload._id,
                 username: action.payload.username,
                 email: action.payload.email,
             };
@@ -119,6 +122,7 @@ const authSlice = createSlice({
         builder.addCase(fetchAuthMe.fulfilled, (state, action) => {
             state.loading = false;
             state.userInfo = {
+                _id: action.payload._id,
                 username: action.payload.username,
                 email: action.payload.email,
             };
@@ -134,6 +138,7 @@ const authSlice = createSlice({
         builder.addCase(fetchUpdateProfile.fulfilled, (state, action) => {
             state.loading = false;
             state.userInfo = {
+                _id: action.payload._id,
                 username: action.payload.username,
                 email: action.payload.email,
             };

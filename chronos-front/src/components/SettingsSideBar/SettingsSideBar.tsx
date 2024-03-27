@@ -3,14 +3,24 @@ import { useAppSelector } from '../../hooks/redux-hooks.ts';
 import { useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from '../../axios.ts';
+import { useSelector } from 'react-redux';
 
 export const SettingsSideBar = () => {
     const navigate = useNavigate();
+
+    const clientId = useSelector(state => state.auth.userInfo._id);
     const calendarEntryMap: Map<string, CalendarEntry> = useAppSelector(state => state.calendarList.calendarEntryMap);
     if (!calendarEntryMap) {
         return <></>;
     }
-    const calendarEntryList: CalendarEntry[] = useMemo(() => Array.from(calendarEntryMap.values()), [calendarEntryMap]);
+    const calendarEntryList: CalendarEntry[] = useMemo(() => {
+            return Array.from(calendarEntryMap.values()).filter(entry => {
+                return entry.calendar.users.owners.find((e) => {
+                    return e === clientId;
+                });
+            });
+        }
+        , [calendarEntryMap, clientId]);
 
     const handleLogOut = async () => {
         await axios.post('/auth/logout');

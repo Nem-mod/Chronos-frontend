@@ -9,7 +9,7 @@ interface Props {
     calendarEntryId: number;
 }
 
-export const CalendarGuestsForm = ({ calendar, calendarEntryId }: Props) => {
+export const CalendarGuestsForm = ({ calendar }: Props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [invitedUser, setInvitedUser] = useState<string>('');
     const ref = useRef(null);

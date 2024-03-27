@@ -1,6 +1,7 @@
 import useFetch, { HttpMethods } from '../../../hooks/use-fetch-hook.ts';
 import { Client } from '../../../store/slices/auth/authSlice.ts';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 interface Props {
     id: string;
@@ -9,9 +10,10 @@ interface Props {
 }
 
 export const CalendarMember = ({ id, type, onChange }: Props) => {
+    const client = useSelector(state => state.auth.userInfo);
+    const [isOwner] = useState(client._id != id);
     const [data] = useFetch(`/auth/user?userId=${id}`, HttpMethods.get) as [Client, boolean, string];
     const [memberType, setMemberType] = useState(type);
-
     return (
         <>
             <li className={'flex justify-between px-5 py-2 max-w-lg border bg-gray-200 '}>
@@ -31,24 +33,23 @@ export const CalendarMember = ({ id, type, onChange }: Props) => {
                                   d='m1 1 4 4 4-4' />
                         </svg>
                     </div>
-                    <ul tabIndex={0} className='dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52'>
-                        <li onClick={() => {
-                            if (!onChange)
-                                return;
-                            setMemberType('Owner');
-                            onChange('Owner', id);
-                        }} className={'py-2 px-5 hover:bg-blue-200'}>Owner
-                        </li>
+                    {isOwner && (
+                        <ul tabIndex={0}
+                            className='dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52'>
+                            <li onClick={() => {
+                                setMemberType('Owner');
+                                onChange('Owner', id);
+                            }} className={'py-2 px-5 hover:bg-blue-200'}>Owner
+                            </li>
 
-                        <li onClick={() => {
-                            if (!onChange)
-                                return;
+                            <li onClick={() => {
 
-                            setMemberType('Guest');
-                            onChange('Guest', id);
-                        }} className={'py-2 px-5 hover:bg-blue-200'}>Guest
-                        </li>
-                    </ul>
+                                setMemberType('Guest');
+                                onChange('Guest', id);
+                            }} className={'py-2 px-5 hover:bg-blue-200'}>Guest
+                            </li>
+                        </ul>
+                    )}
                 </div>
             </li>
         </>
