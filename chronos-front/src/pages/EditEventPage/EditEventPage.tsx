@@ -34,6 +34,7 @@ export const EditEventPage = () => {
             _id: id,
             ...value,
         }));
+        console.log(value);
         handleCloseSettings();
         dispatch(fetchGetVisibleEvents({ list: calendarIDs }));
     };
