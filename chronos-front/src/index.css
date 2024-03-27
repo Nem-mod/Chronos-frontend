@@ -63,3 +63,7 @@
 .fc-header-toolbar {
     @apply mt-4
 }
+
+.modal-text {
+    @apply text-xl font-semibold
+}

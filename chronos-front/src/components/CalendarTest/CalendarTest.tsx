@@ -54,6 +54,10 @@ export const CalendarTest = () => {
             start: e.start,
             end: e.end,
             id: e._id,
+            color: e.color,
+            extendedProps: {
+                color: e.color
+            }
         };
     });
     // const [events, setEvents] = useState<any[]>([]);
@@ -158,11 +162,13 @@ export const CalendarTest = () => {
                         </button>
                     </div>
                     {eventInfo &&
-                        <div className={'flex flex-col gap-3 p-2'}>
-                            <span>Title: {eventInfo.title}</span>
-                            <span>Start: {new Date(eventInfo.startStr).toDateString()}</span>
-                            <span>End: {new Date(eventInfo.endStr).toDateString()}</span>
-                            <span>
+                        <div
+                            className={'flex flex-col gap-5 p-6 border rounded-xl border-white'}
+                        >
+                            <span className={'modal-text'}>Title: {eventInfo.title}</span>
+                            <span className={'modal-text'}>Start: {new Date(eventInfo.startStr).toDateString()}</span>
+                            <span className={'modal-text'}>End: {new Date(eventInfo.endStr).toDateString()}</span>
+                            <span className={'modal-text'}>
                                 {/*Duration: {eventInfo.startStr.split('T')[1].split('+')[0]} - {eventInfo.endStr.split('T')[1].split('+')[0]}*/}
                                 Duration: {new Date(eventInfo.startStr).toDateString()}
                             </span>
