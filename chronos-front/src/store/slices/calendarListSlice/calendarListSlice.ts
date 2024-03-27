@@ -210,7 +210,12 @@ export const selectIdOfVisibleCalendarEntries = (state: RootState) => {
         return null;
     return [...state.calendarList.calendarEntryMap.values()]
         .filter((e: CalendarEntry) => e.visibilitySettings?.isVisible)
-        .map((e: CalendarEntry) => e.calendar._id);
+        .map((e: CalendarEntry) => {
+            return {
+                id: e.calendar._id,
+                color: e.visibilitySettings.color || '#0000ff',
+            };
+        });
 };
 
 

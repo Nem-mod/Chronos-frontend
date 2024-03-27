@@ -30,22 +30,33 @@ export const fetchUpdateEvent = createAsyncThunk<Event, Event, GetThunkAPI<Async
 
 
 // WIP: mb refactor later
+type Calendar_Color_ID = {
+    color: string
+    id: string
+}
+
 type TGetEvents = {
-    calendarIds: string[]
+    list: Calendar_Color_ID[]
 }
 export const fetchGetVisibleEvents = createAsyncThunk<Event[], TGetEvents, { rejectValue: string }>(
     'eventList/get/events',
-    async ({ calendarIds }, { rejectWithValue }) => {
+    async ({ list }, { rejectWithValue }) => {
         try {
-            const urls = calendarIds.map(calendarId => `/event/all?calendarId=${calendarId}`);
+            const urls = list.map(e => `/event/all?calendarId=${e.id}`);
             const fetchURL = (url: string) => axios.get<Event[]>(url);
             const promises = urls.map(fetchURL);
 
             const results = await Promise.all(promises.map(p => p.catch(e => e)));
-            const validResults: Event[] = results.filter(result => !(result instanceof Error))
-                .flatMap(e => {
-                    return e.data as Event[];
+            const validResults: Event[] = results.reduce((previousValue, currentValue, currentIndex) => {
+                let data = currentValue.data.map((element: Event) => {
+                    return {
+                        ...element,
+                        color: list[currentIndex].color,
+                    };
                 });
+                return previousValue.concat(data);
+            }, []);
+
             return validResults;
         } catch (error: any) {
             return rejectWithValue(error.message);

@@ -10,7 +10,7 @@ export const Main = () => {
     const entries = useSelector(state => state.calendarList.calendarEntryMap);
     const visibleCalendarsIds = useSelector(selectIdOfVisibleCalendarEntries);
     useEffect(() => {
-        dispatch(fetchGetVisibleEvents({ calendarIds: visibleCalendarsIds }));
+        dispatch(fetchGetVisibleEvents({ list: visibleCalendarsIds }));
     }, [entries]);
     return (
         <main className={'flex-grow pr-6 pl-6'}>
