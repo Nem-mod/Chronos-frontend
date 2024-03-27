@@ -74,8 +74,9 @@ export const EventForm = ({ event, onSubmit }: Props) => {
                 </div>
             </div>
 
+            <div className={'mt-5 text-xl'}>Event's calendar</div>
 
-            <div className='mt-5 flex justify-between'>
+            <div className='mt-2 flex justify-between'>
                 <select
                     className='select select-info w-full max-w-xs'
                     value={eventCalendar}
