@@ -10,13 +10,14 @@ interface Props {
     visibility: VisibilitySettings;
 }
 
-export const CalendarCheckEntry = ({
-                                       calendarEntryId,
-                                       calendar,
-                                       checkCallBack,
-                                       visibility,
-                                       pickColorCallback,
-                                   }: Props) => {
+export const CalendarCheckEntry = (
+    {
+        calendarEntryId,
+        calendar,
+        checkCallBack,
+        visibility,
+        pickColorCallback,
+    }: Props) => {
     const [color, setColor] = useState(visibility.color || '#fffff');
     const [checked, setChecked] = useState(visibility.isVisible || false);
 
