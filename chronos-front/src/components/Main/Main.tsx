@@ -8,6 +8,7 @@ import { CalendarTest } from '../CalendarTest/CalendarTest.tsx';
 export const Main = () => {
     const dispatch = useAppDispatch();
     const entries = useSelector(state => state.calendarList.calendarEntryMap);
+    // const events = useSelector(state => state.eventList);
     const visibleCalendarsIds = useSelector(selectIdOfVisibleCalendarEntries);
     useEffect(() => {
         dispatch(fetchGetVisibleEvents({ list: visibleCalendarsIds }));
