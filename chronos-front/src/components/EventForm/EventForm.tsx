@@ -24,7 +24,7 @@ export const EventForm = ({ event, onSubmit }: Props) => {
     const [startEvent, setStartEvent] = useState<Dayjs | null>(dayjs(event.start));
     const [endEvent, setEndEvent] = useState<Dayjs | null>(dayjs(event.end));
     const [isAllDay, setIsAllDay] = useState(event.isAllDay);
-    const [recurrenceFrequency, setRecurrenceFrequency] = useState(event.recurrenceSettings?.frequency || FrequencyEnum.DAILY);
+    const [recurrenceFrequency, setRecurrenceFrequency] = useState<FrequencyEnum | null>(event.recurrenceSettings?.frequency || FrequencyEnum.DAILY);
     return (
         <div className={'max-w-2xl'}>
             <TextField value={eventName} onChange={setEventName}
@@ -96,7 +96,7 @@ export const EventForm = ({ event, onSubmit }: Props) => {
                     start: isAllDay ? startEvent?.hour(0) : startEvent?.toISOString(),
                     end: isAllDay ? startEvent?.hour(23) : endEvent?.toISOString(),
                     isAllDay: isAllDay,
-                    recurrenceSettings: {
+                    recurrenceSettings: recurrenceFrequency && {
                         frequency: recurrenceFrequency,
                         isNeverStop: true,
                         interval: 1,

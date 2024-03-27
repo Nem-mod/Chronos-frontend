@@ -2,7 +2,7 @@ import { FrequencyEnum } from '../../store/slices/eventListSlice/types.ts';
 
 interface Props {
     value: string | FrequencyEnum;
-    onChange: (value: FrequencyEnum) => void;
+    onChange: (value: FrequencyEnum | null) => void;
 }
 
 export const EventRecurrenceDropDown = ({ value, onChange }: Props) => {
@@ -15,6 +15,10 @@ export const EventRecurrenceDropDown = ({ value, onChange }: Props) => {
                     <li key={value} onClick={() => onChange(value)}
                         className={'py-2 px-5 hover:bg-blue-200'}>{value}</li>
                 ))}
+                <li onClick={() => onChange(null)}
+                    className={'py-2 px-5 hover:bg-blue-200'}>None
+                </li>
+
             </ul>
         </div>
     );
