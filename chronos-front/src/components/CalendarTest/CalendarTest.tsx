@@ -7,15 +7,25 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 // import interactionPlugin, {Draggable} from "@fullcalendar/interaction";
 import interactionPlugin from '@fullcalendar/interaction';
 import EventProp from './EventProp.tsx';
-import { DateSelectArg, EventClickArg } from '@fullcalendar/core';
+import { DateSelectArg, EventChangeArg, EventClickArg } from "@fullcalendar/core";
 import { Event } from '../../store/slices/eventListSlice/types.ts';
 import '../../index.css';
-import { fetchCreateEvent, getEvents } from '../../store/slices/eventListSlice/eventListSlice.ts';
+import {
+    fetchCreateEvent,
+    fetchDeleteEvent,
+    fetchGetVisibleEvents,
+    fetchUpdateEvent,
+    getEvents
+} from "../../store/slices/eventListSlice/eventListSlice.ts";
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks.ts';
-import { getParentCalendar } from '../../store/slices/calendarListSlice/calendarListSlice.ts';
+import {
+    getParentCalendar,
+    selectIdOfVisibleCalendarEntries
+} from "../../store/slices/calendarListSlice/calendarListSlice.ts";
 import { CalendarEntry } from '../../store/slices/calendarListSlice/types.ts';
 import { useSelector } from 'react-redux';
-import { useState } from "react";
+// import axios from "../../axios.ts";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import trashIcon from "../../assets/trash.svg";
 import editIcon from "../../assets/edit.png";
@@ -27,10 +37,15 @@ export const CalendarTest = () => {
         return dispatch(fetchCreateEvent(event));
     };
 
+    const calendarIDs = useSelector(selectIdOfVisibleCalendarEntries);
+
+
     const navigate = useNavigate();
 
+    const calendarRef = useRef();
+
     const [popup, setPopup] = useState(false);
-    const [eventInfo, setEventInfo] = useState<any>(null)
+    const [eventInfo, setEventInfo] = useState<any>(null);
 
     let events: Event[] = useSelector(getEvents);
     let eventsForView = events.map(e => {
@@ -48,6 +63,8 @@ export const CalendarTest = () => {
         let calendarAPI = selectInfo.view.calendar;
 
         calendarAPI.unselect();
+
+
 
         if (title) {
             // calendarAPI.addEvent({
@@ -80,6 +97,19 @@ export const CalendarTest = () => {
     //     console.log(eventsInfo);
     //     setEvents(eventsInfo);
     // };
+
+    const handleChangeEvent = async (changeInfo: EventChangeArg) => {
+        const event = changeInfo.event;
+        const props: Event = {
+            _id: event.id,
+            name: event.title,
+            start: new Date(event.startStr),
+            end: new Date(event.endStr),
+            isAllDay: event.allDay,
+        }
+        await dispatch(fetchUpdateEvent(props));
+        await dispatch(fetchGetVisibleEvents({calendarIds: calendarIDs}));
+    }
 
     const handleEventClick = (clickInfo: EventClickArg) => {
         // if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
@@ -151,7 +181,16 @@ export const CalendarTest = () => {
                             />
                             Edit
                         </Link>
-                        <button className="btn btn-outline btn-neutral">
+                        <button
+                            className="btn btn-outline btn-neutral"
+                            onClick={
+                                async () => {
+                                    await dispatch(fetchDeleteEvent(eventInfo?.id))
+                                    await dispatch(fetchGetVisibleEvents({calendarIds: calendarIDs}));
+                                    setPopup(false);
+                                }
+                            }
+                        >
                             <img
                                 src={trashIcon} alt=""
                                 className={'h-6 w-6'}
@@ -163,6 +202,7 @@ export const CalendarTest = () => {
                 </div>
             </div>
             <FullCalendar
+                ref={calendarRef}
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                 initialView={'timeGridWeek'}
                 eventDisplay={'block'}
@@ -192,6 +232,7 @@ export const CalendarTest = () => {
                 eventContent={EventProp}
                 // eventsSet={handleEvents}
                 eventClick={handleEventClick}
+                eventChange={handleChangeEvent}
             />
         </div>
     );

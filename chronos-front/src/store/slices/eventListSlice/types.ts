@@ -42,6 +42,7 @@ export type Event = {
     taskSettings?: TaskSettings
     recurrenceSettings?: RecurrenceSettings
     _id?: string
+    color?: string
 
     //
     // "calendar": "65f98852a9860b27a10b4f13",
