@@ -25,7 +25,7 @@ export const EventForm = ({ event, onSubmit }: Props) => {
     const [endEvent, setEndEvent] = useState<Dayjs | null>(dayjs(event.end));
     const [isAllDay, setIsAllDay] = useState(event.isAllDay);
     const [recurrenceFrequency, setRecurrenceFrequency] = useState(event.recurrenceSettings?.frequency || FrequencyEnum.DAILY);
-    console.log(eventCalendar);
+    console.log(startEvent, endEvent);
     return (
         <div className={'max-w-2xl'}>
             <TextField value={eventName} onChange={setEventName}
@@ -50,7 +50,33 @@ export const EventForm = ({ event, onSubmit }: Props) => {
                 }
             </div>
 
-            <div className='mt-5'>
+            <div className={'w-full flex justify-between gap-10 mt-5'}>
+                <div className={'w-1/2'}>
+
+                <span className={'text-xl'}>
+                    Description
+                </span>
+
+                    <TextArea value={eventDescription}
+                              onChange={setEventDescription} />
+                </div>
+                <div className={'w-1/2 flex flex-col justify-between'}>
+
+                    <div className='form-control'>
+                        <label className='cursor-pointer label p-0'>
+                            <span className='label-text text-xl'>Is all day</span>
+                            <input type='checkbox' onChange={(e) => setIsAllDay(e.target.checked)} checked={isAllDay}
+                                   className='checkbox checkbox-info' />
+                        </label>
+                    </div>
+                    <div className={'self-end'}>
+                        <EventRecurrenceDropDown value={recurrenceFrequency} onChange={setRecurrenceFrequency} />
+                    </div>
+                </div>
+            </div>
+
+
+            <div className='mt-5 flex justify-between'>
                 <select
                     className='select select-info w-full max-w-xs'
                     value={eventCalendar}
@@ -62,32 +88,14 @@ export const EventForm = ({ event, onSubmit }: Props) => {
                 </select>
             </div>
 
-            <div className='form-control max-w-32 '>
-                <label className='cursor-pointer label'>
-                    <span className='label-text text-xl'>Is all day</span>
-                    <input type='checkbox' onChange={(e) => setIsAllDay(e.target.checked)} checked={isAllDay}
-                           className='checkbox checkbox-info' />
-                </label>
-            </div>
-            <div className={'w-4/12'}>
-                <span className={'text-xl'}>
-                    Description
-                </span>
 
-                <TextArea value={eventDescription}
-                          onChange={setEventDescription} />
-            </div>
-            <div>
-                <EventRecurrenceDropDown value={recurrenceFrequency} onChange={setRecurrenceFrequency} />
-            </div>
-
-            <button className={'btn'} onClick={() => onSubmit(
+            <button className={'mt-5 btn btn-info'} onClick={() => onSubmit(
                 {
                     calendar: eventCalendar,
                     name: eventName,
                     description: eventDescription,
-                    start: startEvent?.toISOString(),
-                    end: endEvent?.toISOString(),
+                    start: isAllDay ? startEvent?.hour(0) : startEvent?.toISOString(),
+                    end: isAllDay ? startEvent?.hour(23) : endEvent?.toISOString(),
                     isAllDay: isAllDay,
                     recurrenceSettings: {
                         frequency: recurrenceFrequency,

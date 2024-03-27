@@ -10,7 +10,7 @@ export const TextArea = ({ value, onChange }: Props) => {
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
                 placeholder='Bio'
-                className='block textarea textarea-info textarea-md w-full max-w-xs'></textarea>
+                className='mt-2 block textarea textarea-info textarea-md w-full'></textarea>
         </>
     );
 };

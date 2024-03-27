@@ -7,12 +7,12 @@ import { useSelector } from 'react-redux';
 
 export const SettingsSideBar = () => {
     const navigate = useNavigate();
-
     const clientId = useSelector(state => state.auth.userInfo._id);
     const calendarEntryMap: Map<string, CalendarEntry> = useAppSelector(state => state.calendarList.calendarEntryMap);
     if (!calendarEntryMap) {
         return <></>;
     }
+
     const calendarEntryList: CalendarEntry[] = useMemo(() => {
             return Array.from(calendarEntryMap.values()).filter(entry => {
                 return entry.calendar.users.owners.find((e) => {
@@ -29,14 +29,16 @@ export const SettingsSideBar = () => {
 
     return (
         <aside className={'flex flex-col pr-6 basis-2/12 '}>
-            <div className={'pl-6 mt-6 p-2 text-xl rounded-r-lg hover:bg-blue-100'}>
-                <Link to={'account'}>Account settings</Link>
+            <div
+                className={'pl-6 mt-6 p-2 text-xl rounded-r-lg hover:bg-blue-100 text-cyan-700 border-b-4 border-b-blue-100'}>
+                <Link className={''} to={'account'}>Account settings</Link>
             </div>
-            <div className={'pl-6 mt-6 p-2 text-xl rounded-r-lg hover:bg-blue-100'}>
+            <div
+                className={'pl-6 mt-6 p-2 text-xl rounded-r-lg hover:bg-blue-100 text-cyan-700 border-b-4 border-b-blue-100'}>
                 <Link to={'create-calendar'}>Create Calendar</Link>
             </div>
             <div>
-                <div className={'pl-6 mt-6 text-xl'}>My calendars</div>
+                <div className={'pl-6 mt-16 text-xl'}>My calendars</div>
                 <div>
                     <div className={'mt-4'}>
                         {calendarEntryList.map(e => (
