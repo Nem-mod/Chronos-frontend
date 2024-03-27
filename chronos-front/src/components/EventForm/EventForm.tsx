@@ -25,7 +25,6 @@ export const EventForm = ({ event, onSubmit }: Props) => {
     const [endEvent, setEndEvent] = useState<Dayjs | null>(dayjs(event.end));
     const [isAllDay, setIsAllDay] = useState(event.isAllDay);
     const [recurrenceFrequency, setRecurrenceFrequency] = useState(event.recurrenceSettings?.frequency || FrequencyEnum.DAILY);
-    console.log(startEvent, endEvent);
     return (
         <div className={'max-w-2xl'}>
             <TextField value={eventName} onChange={setEventName}
