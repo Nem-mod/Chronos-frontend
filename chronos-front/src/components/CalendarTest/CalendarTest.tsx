@@ -7,7 +7,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 // import interactionPlugin, {Draggable} from "@fullcalendar/interaction";
 import interactionPlugin from '@fullcalendar/interaction';
 import EventProp from './EventProp.tsx';
-import { DateSelectArg, EventChangeArg, EventClickArg } from "@fullcalendar/core";
+import { DateSelectArg, EventChangeArg, EventClickArg } from '@fullcalendar/core';
 import { Event } from '../../store/slices/eventListSlice/types.ts';
 import '../../index.css';
 import {
@@ -15,25 +15,25 @@ import {
     fetchDeleteEvent,
     fetchGetVisibleEvents,
     fetchUpdateEvent,
-    getEvents
-} from "../../store/slices/eventListSlice/eventListSlice.ts";
+    getEvents,
+} from '../../store/slices/eventListSlice/eventListSlice.ts';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks.ts';
 import {
     getParentCalendar,
-    selectIdOfVisibleCalendarEntries
-} from "../../store/slices/calendarListSlice/calendarListSlice.ts";
+    selectIdOfVisibleCalendarEntries,
+} from '../../store/slices/calendarListSlice/calendarListSlice.ts';
 import { CalendarEntry } from '../../store/slices/calendarListSlice/types.ts';
 import { useSelector } from 'react-redux';
 // import axios from "../../axios.ts";
-import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import trashIcon from "../../assets/trash.svg";
-import editIcon from "../../assets/edit.png";
+import { useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import trashIcon from '../../assets/trash.svg';
+import editIcon from '../../assets/edit.png';
 
 export const CalendarTest = () => {
     const dispatch = useAppDispatch();
     const parentCalendar: CalendarEntry = useAppSelector(getParentCalendar);
-    const handleCreateEvent = async(event: Event) => {
+    const handleCreateEvent = async (event: Event) => {
         return dispatch(fetchCreateEvent(event));
     };
 
@@ -53,17 +53,16 @@ export const CalendarTest = () => {
             title: e.name,
             start: e.start,
             end: e.end,
-            id: e._id
+            id: e._id,
         };
     });
     // const [events, setEvents] = useState<any[]>([]);
 
     const handleDateSelect = (selectInfo: DateSelectArg) => {
-        let title = '(No title)'
+        let title = '(No title)';
         let calendarAPI = selectInfo.view.calendar;
 
         calendarAPI.unselect();
-
 
 
         if (title) {
@@ -86,8 +85,8 @@ export const CalendarTest = () => {
             };
             handleCreateEvent(event).then((res: any) => {
                 if (!res.error) {
-                    console.log(res)
-                    navigate(`edit-event/${res.payload._id}`)
+                    console.log(res);
+                    navigate(`edit-event/${res.payload._id}`);
                 }
             });
         }
@@ -106,17 +105,17 @@ export const CalendarTest = () => {
             start: new Date(event.startStr),
             end: new Date(event.endStr),
             isAllDay: event.allDay,
-        }
+        };
         await dispatch(fetchUpdateEvent(props));
-        await dispatch(fetchGetVisibleEvents({calendarIds: calendarIDs}));
-    }
+        await dispatch(fetchGetVisibleEvents({ list: calendarIDs }));
+    };
 
     const handleEventClick = (clickInfo: EventClickArg) => {
         // if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
         //     clickInfo.event.remove();
         // }
-        setEventInfo(clickInfo.event)
-        console.log(eventInfo)
+        setEventInfo(clickInfo.event);
+        console.log(eventInfo);
         setPopup(!popup);
     };
 
@@ -129,12 +128,12 @@ export const CalendarTest = () => {
         <div
             className={''}
         >
-            <input type="checkbox" className={'modal-toggle'}/>
+            <input type='checkbox' className={'modal-toggle'} />
             <div
                 // onClick={() => setPopup(false)}
                 className={
-                    (popup ? "modal-open" : "") + " " +
-                    "modal "
+                    (popup ? 'modal-open' : '') + ' ' +
+                    'modal '
                 }
             >
 
@@ -145,15 +144,16 @@ export const CalendarTest = () => {
                         className={'flex flex-row justify-end'}
                     >
                         <button
-                            className={"btn btn-circle btn-outline btn-sm "}
+                            className={'btn btn-circle btn-outline btn-sm '}
                             onClick={() => setPopup(false)}
                         >
                             <svg
-                                xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor"
-                                className={"h-6 w-6"}
+                                xmlns='http://www.w3.org/2000/svg' fill='none'
+                                viewBox='0 0 24 24' stroke='currentColor'
+                                className={'h-6 w-6'}
                             >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2'
+                                      d='M6 18L18 6M6 6l12 12' />
                             </svg>
                         </button>
                     </div>
@@ -172,27 +172,27 @@ export const CalendarTest = () => {
                         className={'flex flex-row justify-around'}
                     >
                         <Link
-                            className="btn btn-outline btn-neutral"
+                            className='btn btn-outline btn-neutral'
                             to={`edit-event/${eventInfo?.id}`}
                         >
                             <img
-                                src={editIcon} alt=""
+                                src={editIcon} alt=''
                                 className={'h-6 w-6'}
                             />
                             Edit
                         </Link>
                         <button
-                            className="btn btn-outline btn-neutral"
+                            className='btn btn-outline btn-neutral'
                             onClick={
                                 async () => {
-                                    await dispatch(fetchDeleteEvent(eventInfo?.id))
-                                    await dispatch(fetchGetVisibleEvents({calendarIds: calendarIDs}));
+                                    await dispatch(fetchDeleteEvent(eventInfo?.id));
+                                    await dispatch(fetchGetVisibleEvents({ list: calendarIDs }));
                                     setPopup(false);
                                 }
                             }
                         >
                             <img
-                                src={trashIcon} alt=""
+                                src={trashIcon} alt=''
                                 className={'h-6 w-6'}
                             />
                             Delete

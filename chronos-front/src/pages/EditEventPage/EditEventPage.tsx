@@ -4,13 +4,13 @@ import { Event } from '../../store/slices/eventListSlice/types.ts';
 import axios from '../../axios.ts';
 import { EventForm } from '../../components/EventForm/EventForm.tsx';
 import { useAppDispatch } from '../../hooks/redux-hooks.ts';
-import { fetchGetVisibleEvents, fetchUpdateEvent } from "../../store/slices/eventListSlice/eventListSlice.ts";
+import { fetchGetVisibleEvents, fetchUpdateEvent } from '../../store/slices/eventListSlice/eventListSlice.ts';
 import { useNavigate } from 'react-router-dom';
 import { NavBar } from '../../components/NavBar/NavBar.tsx';
 import { SidebarButton } from '../../components/SidebarButton/SidebarButton.tsx';
 import arrow from '../../assets/icon-arrow.png';
-import { useSelector } from "react-redux";
-import { selectIdOfVisibleCalendarEntries } from "../../store/slices/calendarListSlice/calendarListSlice.ts";
+import { useSelector } from 'react-redux';
+import { selectIdOfVisibleCalendarEntries } from '../../store/slices/calendarListSlice/calendarListSlice.ts';
 
 export const EditEventPage = () => {
     const dispatch = useAppDispatch();
@@ -35,7 +35,7 @@ export const EditEventPage = () => {
             ...value,
         }));
         handleCloseSettings();
-        dispatch(fetchGetVisibleEvents({calendarIds: calendarIDs}));
+        dispatch(fetchGetVisibleEvents({ list: calendarIDs }));
     };
     return (
         <div>
