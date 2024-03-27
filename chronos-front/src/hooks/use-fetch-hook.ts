@@ -8,7 +8,7 @@ export enum HttpMethods {
     delete = 'delete'
 }
 
-function useFetch(url: string, method: HttpMethods, params: object) {
+function useFetch(url: string, method: HttpMethods, params?: object): [any, boolean | null, string | null] {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState<boolean | null>(null);
     const [error, setError] = useState<string | null>(null);
