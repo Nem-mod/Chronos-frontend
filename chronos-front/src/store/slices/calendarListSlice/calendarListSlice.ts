@@ -218,6 +218,12 @@ export const selectIdOfVisibleCalendarEntries = (state: RootState) => {
         });
 };
 
+export const selectCalendars = (state: RootState) => {
+    if (!state.calendarList.calendarEntryMap)
+        return null;
+    return [...state.calendarList.calendarEntryMap.values()]
+        .map((e: CalendarEntry) => e.calendar);
+};
 
 export const selectCalendarEntryById = (state: RootState, id: string) => {
     if (!state.calendarList.calendarEntryMap)

@@ -6,6 +6,8 @@ import dayjs, { Dayjs } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { TextArea } from '../SettingsInputFields/TextArea.tsx';
 import { EventRecurrenceDropDown } from '../EventRecurrenceDropDown/EventRecurrenceDropDown.tsx';
+import { useAppSelector } from '../../hooks/redux-hooks.ts';
+import { selectCalendars } from '../../store/slices/calendarListSlice/calendarListSlice.ts';
 
 interface Props {
     event: Event;
@@ -14,15 +16,16 @@ interface Props {
 
 dayjs.extend(customParseFormat);
 export const EventForm = ({ event, onSubmit }: Props) => {
-    let [eventName, setEventName] = useState<string>(event.name);
-    let [eventDescription, setEventDescription] = useState<string>(event.description || '');
+    const calendars = useAppSelector(selectCalendars);
 
-    let [startEvent, setStartEvent] = useState<Dayjs | null>(dayjs(event.start));
-    let [endEvent, setEndEvent] = useState<Dayjs | null>(dayjs(event.end));
-    let [isAllDay, setIsAllDay] = useState<boolean>(event.isAllDay);
-    let [recurrenceFrequency, setRecurrenceFrequency] = useState<FrequencyEnum>(event.recurrenceSettings?.frequency || FrequencyEnum.DAILY);
+    const [eventCalendar, setEventCalendar] = useState(event.calendar);
+    const [eventName, setEventName] = useState(event.name);
+    const [eventDescription, setEventDescription] = useState(event.description || '');
+    const [startEvent, setStartEvent] = useState<Dayjs | null>(dayjs(event.start));
+    const [endEvent, setEndEvent] = useState<Dayjs | null>(dayjs(event.end));
+    const [isAllDay, setIsAllDay] = useState(event.isAllDay);
+    const [recurrenceFrequency, setRecurrenceFrequency] = useState(event.recurrenceSettings?.frequency || FrequencyEnum.DAILY);
 
-    // console.log(endEvent?.toISOString());
     return (
         <div className={'max-w-2xl'}>
             <TextField value={eventName} onChange={setEventName}
@@ -46,6 +49,19 @@ export const EventForm = ({ event, onSubmit }: Props) => {
                     )
                 }
             </div>
+
+            <div className='mt-5'>
+                <select
+                    className='select select-info w-full max-w-xs'
+                    value={eventCalendar}
+                    onChange={e => setEventCalendar(e.target.value)}
+                >
+                    {calendars && calendars.map(calendar => (
+                        <option key={calendar._id} value={calendar._id}>{calendar.name}</option>
+                    ))}
+                </select>
+            </div>
+
             <div className='form-control max-w-32 '>
                 <label className='cursor-pointer label'>
                     <span className='label-text text-xl'>Is all day</span>
@@ -67,6 +83,7 @@ export const EventForm = ({ event, onSubmit }: Props) => {
 
             <button className={'btn'} onClick={() => onSubmit(
                 {
+                    calendar: eventCalendar,
                     name: eventName,
                     description: eventDescription,
                     start: startEvent?.toISOString(),
