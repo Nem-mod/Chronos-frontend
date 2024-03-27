@@ -1,3 +1,5 @@
+import { Calendar } from '../calendarListSlice/types.ts';
+
 export enum FrequencyEnum {
     DAILY = `DAILY`,
     WEEKLY = `WEEKLY`,
@@ -32,7 +34,7 @@ export type RecurrenceSettings = {
 }
 
 export type Event = {
-    calendar: string
+    calendar: (string | Calendar)
     name: string
     description?: string
     timezone: string

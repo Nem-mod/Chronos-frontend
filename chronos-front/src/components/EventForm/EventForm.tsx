@@ -18,14 +18,14 @@ dayjs.extend(customParseFormat);
 export const EventForm = ({ event, onSubmit }: Props) => {
     const calendars = useAppSelector(selectCalendars);
 
-    const [eventCalendar, setEventCalendar] = useState(event.calendar);
+    const [eventCalendar, setEventCalendar] = useState(event.calendar._id);
     const [eventName, setEventName] = useState(event.name);
     const [eventDescription, setEventDescription] = useState(event.description || '');
     const [startEvent, setStartEvent] = useState<Dayjs | null>(dayjs(event.start));
     const [endEvent, setEndEvent] = useState<Dayjs | null>(dayjs(event.end));
     const [isAllDay, setIsAllDay] = useState(event.isAllDay);
     const [recurrenceFrequency, setRecurrenceFrequency] = useState(event.recurrenceSettings?.frequency || FrequencyEnum.DAILY);
-
+    console.log(eventCalendar);
     return (
         <div className={'max-w-2xl'}>
             <TextField value={eventName} onChange={setEventName}
