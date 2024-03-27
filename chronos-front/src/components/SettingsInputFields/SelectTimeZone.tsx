@@ -10,13 +10,14 @@ const timezones = {
 interface Props {
     onChangeCallback: (timezone: string) => void;
     value: string;
+    className?: string;
 }
 
-export const SelectTimeZone = ({ onChangeCallback, value }: Props) => {
+export const SelectTimeZone = ({ onChangeCallback, value, className }: Props) => {
     const { options, parseTimezone } = useTimezoneSelect({ labelStyle, timezones });
     return (
-        <div>
-            <select className={'select select-bordered w-full max-w-xs'}
+        <>
+            <select className={className || 'block select select-bordered w-full max-w-xs'}
                     value={value}
                     onChange={(e) => onChangeCallback(parseTimezone(e.currentTarget.value).value)}>
                 {options.map((option) => (
@@ -24,6 +25,6 @@ export const SelectTimeZone = ({ onChangeCallback, value }: Props) => {
                             value={option.value}>{option.label}</option>
                 ))}
             </select>
-        </div>
+        </>
     );
 };

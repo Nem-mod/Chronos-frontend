@@ -30,11 +30,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import trashIcon from '../../assets/trash.svg';
 import editIcon from '../../assets/edit.png';
 
-import rrulePlugin from "@fullcalendar/rrule";
+import rrulePlugin from '@fullcalendar/rrule';
+import momentTimezonePlugin from '@fullcalendar/moment-timezone';
 
 export const CalendarTest = () => {
     const dispatch = useAppDispatch();
     const parentCalendar: CalendarEntry = useAppSelector(getParentCalendar);
+
+    const timeZone = useAppSelector(state => state.auth.timeZone);
     const handleCreateEvent = async (event: Event) => {
         return dispatch(fetchCreateEvent(event));
     };
@@ -58,15 +61,15 @@ export const CalendarTest = () => {
             id: e._id,
             color: e.color,
             extendedProps: {
-                color: e.color
+                color: e.color,
             },
             rrule: (e.recurrenceSettings ? {
                 freq: e.recurrenceSettings.frequency,
                 interval: e.recurrenceSettings.interval,
                 dtstart: e.start,
                 // until: e.recurrenceSettings.until?.toDateString().split('T')[0]
-                until: e.recurrenceSettings.until
-            } : null)
+                until: e.recurrenceSettings.until,
+            } : null),
         };
     });
 
@@ -122,18 +125,10 @@ export const CalendarTest = () => {
     };
 
     const handleEventClick = (clickInfo: EventClickArg) => {
-        // if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-        //     clickInfo.event.remove();
-        // }
         setEventInfo(clickInfo.event);
         console.log(eventInfo);
         setPopup(!popup);
     };
-
-    // useEffect(() => {
-    //     console.log(events)
-    // }, [events]);
-
 
     return (
         <div
@@ -216,7 +211,7 @@ export const CalendarTest = () => {
             </div>
             <FullCalendar
                 ref={calendarRef}
-                plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, rrulePlugin]}
+                plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, rrulePlugin, momentTimezonePlugin]}
                 initialView={'timeGridWeek'}
                 eventDisplay={'block'}
                 headerToolbar={{
@@ -224,6 +219,7 @@ export const CalendarTest = () => {
                     center: 'title',
                     right: 'timeGridWeek,dayGridMonth',
                 }}
+                timeZone={timeZone}
                 events={eventsForView}
                 weekends={true}
                 nowIndicator={true}

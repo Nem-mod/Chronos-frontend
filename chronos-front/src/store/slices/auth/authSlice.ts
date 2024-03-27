@@ -71,6 +71,7 @@ export const fetchVerify = createAsyncThunk(
 interface AuthState {
     loading: boolean,
     userInfo: Client | null,
+    timeZone: string | null
     error: any | null,
     success: boolean
 }
@@ -78,6 +79,7 @@ interface AuthState {
 const initialState: AuthState = {
     loading: false,
     userInfo: null,
+    timeZone: 'Europe/Kyiv',
     error: null,
     success: false,
 };
@@ -85,7 +87,11 @@ const initialState: AuthState = {
 const authSlice = createSlice({
     initialState,
     name: 'auth',
-    reducers: {},
+    reducers: {
+        changeTimeZone(state, action) {
+            state.timeZone = action.payload.timeZone;
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(fetchRegister.fulfilled, (state, action) => {
             state.loading = false;
@@ -155,5 +161,6 @@ const authSlice = createSlice({
     },
 });
 
+export const { changeTimeZone } = authSlice.actions;
 export const authReducer = authSlice.reducer;
 
