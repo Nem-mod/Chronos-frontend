@@ -28,6 +28,18 @@ export const fetchUpdateEvent = createAsyncThunk<Event, Event, GetThunkAPI<Async
     },
 );
 
+export const fetchDeleteEvent = createAsyncThunk<String, String, GetThunkAPI<AsyncThunkConfig>>(
+    'eventList/delete/event',
+    async (props, { rejectWithValue }) => {
+        try {
+            const response = await axios.delete(`/event?eventId=${props}`);
+            return response.data;
+        } catch (error: any) {
+            return rejectWithValue(error.message);
+        }
+    },
+);
+
 
 // WIP: mb refactor later
 type Calendar_Color_ID = {
@@ -117,11 +129,31 @@ const eventListSlice = createSlice({
             state.success = false;
         });
 
+        builder.addCase(fetchUpdateEvent.pending, (state, action) => {
+            state.loading = true;
+            state.success = false;
+        });
+
         builder.addCase(fetchUpdateEvent.fulfilled, (state, action) => {
             state.loading = false;
             state.success = true;
         });
 
+        builder.addCase(fetchDeleteEvent.fulfilled, (state, action) => {
+            state.loading = false;
+            state.success = true;
+        });
+
+        builder.addCase(fetchDeleteEvent.pending, (state, action) => {
+            state.loading = true;
+            state.success = false;
+        });
+
+        builder.addCase(fetchDeleteEvent.rejected, (state, action) => {
+            state.loading = false;
+            state.success = false;
+            state.error.message = action.error;
+        });
     },
 });
 
