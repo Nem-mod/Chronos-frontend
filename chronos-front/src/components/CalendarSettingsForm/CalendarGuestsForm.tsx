@@ -2,6 +2,7 @@ import { Calendar } from '../../store/slices/calendarListSlice/types.ts';
 import { useEffect, useRef, useState } from 'react';
 import { TextField } from '../SettingsInputFields/TextField.tsx';
 import axios, { webURL } from '../../axios.ts';
+import { CalendarMembersList } from './CalendarMembers/CalendarMembersList.tsx';
 
 interface Props {
     calendar: Calendar;
@@ -28,7 +29,7 @@ export const CalendarGuestsForm = ({ calendar, calendarEntryId }: Props) => {
     const handleSubmitInvite = () => {
         axios.post('/calendar/invite/send-code', {
             returnUrl: `${webURL}/calendar/invite?token=inviteToken`,
-            username: invitedUser,
+            email: invitedUser,
             calendar: calendar._id,
         });
         setModalIsOpen(false);
@@ -39,28 +40,21 @@ export const CalendarGuestsForm = ({ calendar, calendarEntryId }: Props) => {
                 Sharing with individual users or groups
             </p>
             <div className='mt-2'>
-                <ul>
-                    {calendar && calendar.users.owners.map(e => (
-                            <li key={e}>{e}</li>
-                        ),
-                    )}
-                </ul>
+                <CalendarMembersList calendarMembers={calendar.users} calendarId={calendar._id} />
             </div>
             <div className='mt-2'>
                 <button className='btn text-blue-500' onClick={() => setModalIsOpen(true)}>Invite guests</button>
-
                 <dialog className={`modal ${modalIsOpen && 'modal-open'}`}>
                     <div className='modal-box' ref={ref}>
                         <h3 className='font-bold text-lg'>Access for individual users</h3>
-                        <TextField className={'w-full input'} value={invitedUser}
+                        <TextField className={'w-full input'}
+                                   placeholder={'email'}
+                                   value={invitedUser}
                                    onChange={setInvitedUser} />
                         <button className={'mt-2 btn bg-blue-500 hover:bg-blue-400'}
                                 onClick={handleSubmitInvite}>Submit
                         </button>
                     </div>
-                    {/*<form method='dialog' className='modal-backdrop'>*/}
-                    {/*    <button>close</button>*/}
-                    {/*</form>*/}
                 </dialog>
             </div>
         </>
