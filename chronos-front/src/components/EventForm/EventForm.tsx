@@ -24,7 +24,9 @@ export const EventForm = ({ event, onSubmit }: Props) => {
     const [startEvent, setStartEvent] = useState<Dayjs | null>(dayjs(event.start));
     const [endEvent, setEndEvent] = useState<Dayjs | null>(dayjs(event.end));
     const [isAllDay, setIsAllDay] = useState(event.isAllDay);
-    const [recurrenceFrequency, setRecurrenceFrequency] = useState<FrequencyEnum | null>(event.recurrenceSettings?.frequency || FrequencyEnum.DAILY);
+    const [recurrenceFrequency, setRecurrenceFrequency] = useState<FrequencyEnum | null>(event.recurrenceSettings?.frequency || null);
+    const [isTask, setIsTask] = useState(Boolean(event?.taskSettings));
+    const [isCompletedTask, setIsCompletedTask] = useState(Boolean(event.taskSettings?.isCompleted));
     return (
         <div className={'max-w-2xl'}>
             <TextField value={eventName} onChange={setEventName}
@@ -47,7 +49,15 @@ export const EventForm = ({ event, onSubmit }: Props) => {
                         </>
                     )
                 }
+                <div className='mt-2 form-control grow'>
+                    <label className='cursor-pointer label p-0'>
+                        <span className='label-text text-xl'>Is all day</span>
+                        <input type='checkbox' onChange={(e) => setIsAllDay(e.target.checked)} checked={isAllDay}
+                               className='checkbox checkbox-info' />
+                    </label>
+                </div>
             </div>
+
 
             <div className={'w-full flex justify-between gap-10 mt-5'}>
                 <div className={'w-1/2'}>
@@ -60,19 +70,32 @@ export const EventForm = ({ event, onSubmit }: Props) => {
                               onChange={setEventDescription} />
                 </div>
                 <div className={'w-1/2 flex flex-col justify-between'}>
-
-                    <div className='form-control'>
-                        <label className='cursor-pointer label p-0'>
-                            <span className='label-text text-xl'>Is all day</span>
-                            <input type='checkbox' onChange={(e) => setIsAllDay(e.target.checked)} checked={isAllDay}
-                                   className='checkbox checkbox-info' />
-                        </label>
+                    <div className={'flex justify-between flex-row-reverse'}>
+                        <div className='form-control'>
+                            <label className='cursor-pointer label p-0'>
+                                <span className='label-text text-xl'>Event is task</span>
+                                <input type='checkbox' onChange={(e) => setIsTask(e.target.checked)}
+                                       checked={isTask}
+                                       className='checkbox ml-2 checkbox-info' />
+                            </label>
+                        </div>
+                        {isTask && (
+                            <div className='form-control'>
+                                <label className='cursor-pointer label p-0'>
+                                    <span className='label-text text-xl'>Done</span>
+                                    <input type='checkbox' onChange={(e) => setIsCompletedTask(e.target.checked)}
+                                           checked={isCompletedTask}
+                                           className='ml-2 checkbox checkbox-info' />
+                                </label>
+                            </div>
+                        )}
                     </div>
                     <div className={'self-end'}>
                         <EventRecurrenceDropDown value={recurrenceFrequency} onChange={setRecurrenceFrequency} />
                     </div>
                 </div>
             </div>
+
 
             <div className={'mt-5 text-xl'}>Event's calendar</div>
 
@@ -97,6 +120,7 @@ export const EventForm = ({ event, onSubmit }: Props) => {
                     start: isAllDay ? startEvent?.hour(0) : startEvent?.toISOString(),
                     end: isAllDay ? startEvent?.hour(23) : endEvent?.toISOString(),
                     isAllDay: isAllDay,
+                    taskSettings: isTask ? { isCompleted: isCompletedTask } : null,
                     recurrenceSettings: recurrenceFrequency && {
                         frequency: recurrenceFrequency,
                         isNeverStop: true,
